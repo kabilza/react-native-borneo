@@ -6,24 +6,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AuthenticationScreen from "./screens/AuthenticationScreen";
 import SplashScreen from "./screens/SplashScreen";
+import HomeScreen from "./screens/HomeScreen";
+
+import MainNavigator from "./navigator/MainNavigator";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="AuthenticationScreen"
-          component={AuthenticationScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
+      <MainNavigator />
     </NavigationContainer>
   );
 }

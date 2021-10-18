@@ -17,7 +17,7 @@ import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Fonts from "../constants/Fonts";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -86,7 +86,7 @@ const LoginScreen = () => {
               <TouchableOpacity
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
-                onPress={handleFormSubmit}
+                onPress={() => {navigation.navigate('HomeScreen')}}
               >
                 <Text style={styles.buttonTextStyle}>LOGIN</Text>
               </TouchableOpacity>

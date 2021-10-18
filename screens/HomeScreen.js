@@ -1,10 +1,28 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useLayoutEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
+import MyHeaderIcon from "../components/MyHeaderIcon";
 
 import Colors from "../constants/Colors";
 import Fonts from "../constants/Fonts";
 
-const HomeScreen = (props) => {
+const HomeScreen = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "You are in HomeScreen!",
+      headerRight: () => (
+        <MyHeaderIcon
+          iconName="md-home"
+          style={{ marginLeft: 0 }}
+          onPress={() => {
+            console.log('pressed');
+          }}
+        />
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.titleFont}>This is homescreen!</Text>
@@ -20,10 +38,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryColor,
   },
   titleFont: {
-      fontFamily: Fonts.primaryFont,
-      fontSize: 25,
-      fontWeight: "bold"
-  }
+    fontFamily: Fonts.primaryFont,
+    fontSize: 25,
+    fontWeight: "bold",
+  },
 });
 
 export default HomeScreen;
