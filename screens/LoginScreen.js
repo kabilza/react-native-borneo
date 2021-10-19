@@ -10,14 +10,14 @@ import {
   Keyboard,
   Button,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Fonts from "../constants/Fonts";
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,9 +26,8 @@ const LoginScreen = ({navigation}) => {
   const passwordInputRef = createRef();
 
   const handleFormSubmit = () => {
-    console.log({userEmail, userPassword});
+    console.log({ userEmail, userPassword });
   };
-
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -50,7 +49,7 @@ const LoginScreen = ({navigation}) => {
                 fontSize: 25,
                 fontWeight: "bold",
                 marginBottom: 30,
-                color: 'white'
+                color: "white",
               }}
             >
               This is a login screen!
@@ -86,7 +85,9 @@ const LoginScreen = ({navigation}) => {
               <TouchableOpacity
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
-                onPress={() => {navigation.navigate('HomeScreen')}}
+                onPress={() => {
+                  navigation.navigate("HomeScreen", { fromLogin: [1,2,3] });
+                }}
               >
                 <Text style={styles.buttonTextStyle}>LOGIN</Text>
               </TouchableOpacity>
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   },
   textInputEmail: {
     borderColor: "black",
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 5,
     backgroundColor: "white",
     width: 300,
@@ -125,14 +126,22 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: Colors.boxes,
     borderRadius: 15,
+    shadowColor: 'black',
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
   },
   buttonStyle: {
-    backgroundColor: Colors.accentColor3,
+    backgroundColor: Colors.accentColor,
+    shadowColor: 'black',
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
     borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#7DE24E',
+    color: "#FFFFFF",
+    borderColor: "#7DE24E",
     height: 40,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 30,
     marginLeft: 35,
     marginRight: 35,
@@ -140,9 +149,10 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   buttonTextStyle: {
-    color: 'white',
+    color: "white",
     paddingVertical: 10,
     fontSize: 16,
+    fontWeight: 'bold'
   },
 });
 

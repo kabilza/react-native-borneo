@@ -7,7 +7,7 @@ import MyHeaderIcon from "../components/MyHeaderIcon";
 import Colors from "../constants/Colors";
 import Fonts from "../constants/Fonts";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "You are in HomeScreen!",
@@ -26,6 +26,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titleFont}>This is homescreen!</Text>
+      <Text style={styles.titleFont}> {route.params.fromLogin}</Text>
     </View>
   );
 };
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: 'white',
   },
   titleFont: {
     fontFamily: Fonts.primaryFont,
