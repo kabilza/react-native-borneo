@@ -86,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
                 onPress={() => {
-                  navigation.navigate("HomeScreen", { fromLogin: [1,2,3] });
+                  navigation.navigate("afterLogin", { fromLogin: 'hello from LoginScreen' });
                 }}
               >
                 <Text style={styles.buttonTextStyle}>LOGIN</Text>

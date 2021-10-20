@@ -18,34 +18,31 @@ import Card from "../components/Card";
 
 const dummyItem = ["hello", "this", "is", "test"];
 
-const HomeScreen = ( props ) => { 
-  // console.log(props.route.params) //testing passing parameters across
-  const { params } = props.route.params //from login screen into homescreen
-  // console.log(params) // now working!
+const SettingsScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
-    props.navigation.setOptions({
-      headerTitle: "You are in HomeScreen!",
+    navigation.setOptions({
+      headerTitle: "You are in SettingsScreen!",
       headerRight: () => (
         <MyHeaderIcon
-          iconName="md-home"
-          style={{ marginLeft: -40 }}
+          iconName="ios-home"
+          style={{ marginLeft: 0 }}
           onPress={() => {
             console.log("pressed");
           }}
         />
       ),
     });
-  }, [props.navigation]);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleFont}>This is homescreen!</Text>
-      <Text style={styles.titleFont}> {params.fromLogin} </Text>
+      <Text style={styles.titleFont}>This is Settings screen!</Text>
+      <Text style={styles.titleFont}> </Text>
       <ScrollView style={styles.listContainer}>
         <View style={{alignItems: 'center'}}>
           {dummyItem.map((item) => (
-            <Card style={styles.homeCard} key={item}>
-              <DummyItem innerText={item}/>
+            <Card style={styles.homeCard}>
+              <DummyItem innerText={item} key={item}/>
             </Card>
           ))}
         </View>
@@ -80,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default SettingsScreen;

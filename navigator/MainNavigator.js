@@ -7,15 +7,38 @@ import HomeScreen from "../screens/HomeScreen";
 import AuthenticationScreen from "../screens/AuthenticationScreen";
 import SplashScreen from "../screens/SplashScreen";
 import Colors from "../constants/Colors";
+import SettingsScreen from "../screens/SettingsScreen";
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const defaultScreenOptions = {
-    headerStyle: {
-      backgroundColor: Colors.accentColor2,
-    },
-    headerTintColor: "white",
-  };
+  headerStyle: {
+    backgroundColor: Colors.accentColor2,
+  },
+  headerTintColor: "white",
+};
+
+const afterLogin = ( {route} ) => {
+  return (
+    <Drawer.Navigator
+      initialRouteName="HomeScreen"
+      screenOptions={defaultScreenOptions}
+    >
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{ headerShown: true }}
+        initialParams={route}
+      />
+      <Stack.Screen
+        name="SettingsScreen"
+        component={SettingsScreen}
+        options={{ headerShown: true }}
+      />
+    </Drawer.Navigator>
+  );
+};
 
 const MainNavigator = () => {
   return (
@@ -35,9 +58,9 @@ const MainNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerShown: true }}
+        name="afterLogin"
+        component={afterLogin}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
