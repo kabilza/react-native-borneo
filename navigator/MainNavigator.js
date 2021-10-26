@@ -10,6 +10,7 @@ import SplashScreen from "../screens/SplashScreen";
 import Colors from "../constants/Colors";
 import SettingsScreen from "../screens/SettingsScreen";
 import RegulationsScreen from "../screens/RegulationsScreen";
+import RegistrationListScreen from "../screens/BatteryRegistration/RegistrationListScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -73,6 +74,21 @@ const afterLogin = ({ route }) => {
           )
          }}
       />
+      <Stack.Screen
+        name="RegistrationListScreen"
+        component={RegistrationListScreen}
+        options={{ 
+          title: 'Registration List',
+          headerShown: true,
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name="ios-list-sharp"
+              size={23}
+              color={drawerConfig.tintColor}
+            />
+          )
+         }}
+      />
     </Drawer.Navigator>
   );
 };
@@ -98,6 +114,13 @@ const MainNavigator = () => {
         name="afterLogin"
         component={afterLogin}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RegistrationListScreen"
+        component={RegistrationListScreen}
+        options={{ 
+          headerShown: true
+         }}
       />
     </Stack.Navigator>
   );

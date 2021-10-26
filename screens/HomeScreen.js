@@ -32,6 +32,7 @@ const HomeScreen = (props) => {
           style={{ marginLeft: -40 }}
           onPress={() => {
             console.log("pressed");
+            props.navigation.replace('RegistrationListScreen')
           }}
         />
       ),
@@ -48,7 +49,7 @@ const HomeScreen = (props) => {
         />
         <Text style={styles.titleFont}>Welcome, user!</Text>
       </View>
-      <ScrollView style={styles.listContainer}>
+      <ScrollView contentContainerStyle={styles.listContainer}>
         <TouchableOpacity>
           <View style={{ alignItems: "center" }}>
             {dummyItem.map((item) => (
