@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,18 +17,18 @@ import Fonts from "../constants/Fonts";
 import DummyItem from "../components/DummyItem";
 import Card from "../components/Card";
 
-const dummyItem = ["hello", "this", "is", "test"];
+const dummyItem = ["hello"];
 
-const HomeScreen = ( props ) => { 
+const HomeScreen = (props) => {
   // console.log(props.route.params) //testing passing parameters across
-  const { params } = props.route.params //from login screen into homescreen
+  const { params } = props.route.params; //from login screen into homescreen
   // console.log(params) // now working!
   useLayoutEffect(() => {
     props.navigation.setOptions({
-      headerTitle: "You are in HomeScreen!",
+      headerTitle: "Home",
       headerRight: () => (
         <MyHeaderIcon
-          iconName="md-home"
+          iconName="ios-create"
           style={{ marginLeft: -40 }}
           onPress={() => {
             console.log("pressed");
@@ -39,16 +40,24 @@ const HomeScreen = ( props ) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleFont}>This is homescreen!</Text>
-      <Text style={styles.titleFont}> {params.fromLogin} </Text>
+      <View style={styles.userImageContainer}>
+        <Image
+          style={styles.userImage}
+          source={require("../assets/images/defaultUserIcon.png")}
+          resizeMode="contain"
+        />
+        <Text style={styles.titleFont}>Welcome, user!</Text>
+      </View>
       <ScrollView style={styles.listContainer}>
-        <View style={{alignItems: 'center'}}>
-          {dummyItem.map((item) => (
-            <Card style={styles.homeCard} key={item}>
-              <DummyItem innerText={item}/>
-            </Card>
-          ))}
-        </View>
+        <TouchableOpacity>
+          <View style={{ alignItems: "center" }}>
+            {dummyItem.map((item) => (
+              <Card style={styles.homeCard} key={item}>
+                <DummyItem innerText={item} />
+              </Card>
+            ))}
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -60,11 +69,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
+    padding: 15,
+  },
+  userImageContainer: {
+    marginVertical: 10,
+    width: "90%",
+    height: "20%",
+    alignItems: "center",
+  },
+  userImage: {
+    height: 90,
+    width: 90,
+    backgroundColor: "grey",
+    borderRadius: 50,
   },
   titleFont: {
     fontFamily: Fonts.primaryFont,
     fontSize: 25,
     fontWeight: "bold",
+    marginTop: 10,
   },
   listContainer: {
     width: "100%",
@@ -76,7 +99,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: "70%",
     height: 150,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
 });
 

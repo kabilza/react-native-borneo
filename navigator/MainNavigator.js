@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 
 import HomeScreen from "../screens/HomeScreen";
@@ -8,6 +9,7 @@ import AuthenticationScreen from "../screens/AuthenticationScreen";
 import SplashScreen from "../screens/SplashScreen";
 import Colors from "../constants/Colors";
 import SettingsScreen from "../screens/SettingsScreen";
+import RegulationsScreen from "../screens/RegulationsScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -19,7 +21,7 @@ const defaultScreenOptions = {
   headerTintColor: "white",
 };
 
-const afterLogin = ( {route} ) => {
+const afterLogin = ({ route }) => {
   return (
     <Drawer.Navigator
       initialRouteName="HomeScreen"
@@ -28,13 +30,48 @@ const afterLogin = ( {route} ) => {
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{ headerShown: true }}
+        options={{
+          title: 'Home',
+          headerShown: true,
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name="ios-home"
+              size={23}
+              color={drawerConfig.tintColor}
+            />
+          ),
+        }}
         initialParams={route}
+      />
+      <Stack.Screen
+        name="RegulationsScreen"
+        component={RegulationsScreen}
+        options={{ 
+          title: 'Battery Regulations',
+          headerShown: true,
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name="ios-checkbox-outline"
+              size={23}
+              color={drawerConfig.tintColor}
+            />
+          )
+         }}
       />
       <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
-        options={{ headerShown: true }}
+        options={{ 
+          title: 'Settings',
+          headerShown: true,
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name="ios-settings"
+              size={23}
+              color={drawerConfig.tintColor}
+            />
+          )
+         }}
       />
     </Drawer.Navigator>
   );

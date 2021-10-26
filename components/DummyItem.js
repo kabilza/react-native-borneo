@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-const DummyItem = (props, { navigation }) => {
+const DummyItem = (props) => {
     return (
         <View>
             <Text style={styles.bodyText}> {props.innerText} </Text>
