@@ -9,7 +9,7 @@ const MyHeaderIcon = (props) => {
       {...props}
         name={props.iconName}
         size={24}
-        color={props.color ? props.color : 'black' }
+        color={props.color ? props.color : 'white' }
       />
     </TouchableOpacity>
   );

@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Card from "../../components/Card";
 import BatteryItem from "../../components/BatteryItem";
 import TitleText from "../../components/TitleText";
+import MyHeaderIcon from "../../components/MyHeaderIcon";
 import * as batteryRegistrationAction from "../../store/actions/registration";
 import { Item } from "react-navigation-header-buttons";
 
@@ -20,17 +21,33 @@ const RegistrationListScreen = (props) => {
     (state) => state.registration.prevRegistration
   );
   const dispatch = useDispatch();
-
-    console.log(props);
-
-  const navigation = props.navigation;
-
+  
     useLayoutEffect(() => {
-        console.log(props);
-        navigation.setOptions({
-            headerTitle: "Add New Battery",
+        // console.log(props);
+        props.navigation.setOptions({
+            headerTitle: "Previously Registered List",
+            headerLeft: () => (
+                <MyHeaderIcon
+                  iconName="ios-menu"
+                  style={{ marginLeft: -10 }}
+                  onPress={() => {
+                    console.log("pressed");
+                    props.navigation.toggleDrawer();
+                  }}
+                />
+              ),
+            headerRight: () => (
+                <MyHeaderIcon
+                  iconName="ios-create"
+                  style={{ marginRight: -4, marginBottom: 1 }}
+                  onPress={() => {
+                    console.log("pressed");
+                    props.navigation.push('RegistrationAddEdit')
+                  }}
+                />
+              ),
         })
-    }, [navigation]);
+    }, [props.navigation]);
 
   return (
     <View style={styles.container}>
@@ -48,7 +65,6 @@ const RegistrationListScreen = (props) => {
             />
           )}
         />
-        {console.log(previouslyRegisteredBattery)}
     </View>
   );
 };

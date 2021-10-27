@@ -1,9 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, Link } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 
+import MyHeaderIcon from "../components/MyHeaderIcon";
 import HomeScreen from "../screens/HomeScreen";
 import AuthenticationScreen from "../screens/AuthenticationScreen";
 import SplashScreen from "../screens/SplashScreen";
@@ -11,9 +12,11 @@ import Colors from "../constants/Colors";
 import SettingsScreen from "../screens/SettingsScreen";
 import RegulationsScreen from "../screens/RegulationsScreen";
 import RegistrationListScreen from "../screens/BatteryRegistration/RegistrationListScreen";
+import RegistrationAddEdit from "../screens/BatteryRegistration/RegistrationAddEdit";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const BatteryRegistrationStack = createNativeStackNavigator();
 
 const defaultScreenOptions = {
   headerStyle: {
@@ -22,33 +25,36 @@ const defaultScreenOptions = {
   headerTintColor: "white",
 };
 
-const registrationScreens = ({ route }) => {
+const registrationScreens = (props) => {
+  const {route} = props.route;
+  console.log(props);
   return (
-    <Drawer.Navigator>
+    <BatteryRegistrationStack.Navigator
+      initialRouteName="RegistrationListScreen"
+      screenOptions={{ ...defaultScreenOptions }}
+    >
       <Stack.Screen
         name="RegistrationListScreen"
         component={RegistrationListScreen}
+      />
+      <Stack.Screen
+        name="RegistrationAddEdit"
+        component={RegistrationAddEdit}
         options={{
-          title: "Registration List",
-          headerShown: false,
-          drawerIcon: (drawerConfig) => (
-            <Ionicons
-              name="ios-list-sharp"
-              size={23}
-              color={drawerConfig.tintColor}
-            />
-          ),
         }}
       />
-    </Drawer.Navigator>
+    </BatteryRegistrationStack.Navigator>
   );
 };
 
-const afterLogin = ({ route }) => {
+const afterLogin = (props) => {
+  const route = props.route;
   return (
     <Drawer.Navigator
       initialRouteName="HomeScreen"
-      screenOptions={defaultScreenOptions}
+      screenOptions={{
+        ...defaultScreenOptions,
+      }}
     >
       <Stack.Screen
         name="HomeScreen"
@@ -82,6 +88,21 @@ const afterLogin = ({ route }) => {
         }}
       />
       <Stack.Screen
+        name="LinkToRegistrationStack"
+        component={registrationScreens}
+        options={{
+          title: "Registration List",
+          headerShown: false,
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name="ios-list-sharp"
+              size={23}
+              color={drawerConfig.tintColor}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
         options={{
@@ -90,21 +111,6 @@ const afterLogin = ({ route }) => {
           drawerIcon: (drawerConfig) => (
             <Ionicons
               name="ios-settings"
-              size={23}
-              color={drawerConfig.tintColor}
-            />
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="RegistrationListScreen"
-        component={RegistrationListScreen}
-        options={{
-          title: "Registration List",
-          headerShown: true,
-          drawerIcon: (drawerConfig) => (
-            <Ionicons
-              name="ios-list-sharp"
               size={23}
               color={drawerConfig.tintColor}
             />
@@ -136,13 +142,6 @@ const MainNavigator = () => {
         name="afterLogin"
         component={afterLogin}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="RegistrationListScreen"
-        component={registrationScreens}
-        options={{
-          headerShown: true,
-        }}
       />
     </Stack.Navigator>
   );

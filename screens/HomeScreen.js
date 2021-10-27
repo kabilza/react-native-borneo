@@ -32,7 +32,7 @@ const HomeScreen = (props) => {
           style={{ marginLeft: -40 }}
           onPress={() => {
             console.log("pressed");
-            props.navigation.replace('RegistrationListScreen')
+            props.navigation.navigate('LinkToRegistrationStack', {fromHome: true})
           }}
         />
       ),
@@ -49,7 +49,7 @@ const HomeScreen = (props) => {
         />
         <Text style={styles.titleFont}>Welcome, user!</Text>
       </View>
-      <ScrollView contentContainerStyle={styles.listContainer}>
+      {/* <ScrollView contentContainerStyle={styles.listContainer}>
         <TouchableOpacity>
           <View style={{ alignItems: "center" }}>
             {dummyItem.map((item) => (
@@ -59,7 +59,7 @@ const HomeScreen = (props) => {
             ))}
           </View>
         </TouchableOpacity>
-      </ScrollView>
+      </ScrollView> */}
     </View>
   );
 };
@@ -67,7 +67,6 @@ const HomeScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
     padding: 15,
@@ -98,9 +97,10 @@ const styles = StyleSheet.create({
   homeCard: {
     alignItems: "center",
     marginBottom: 10,
-    width: "70%",
+    width: 200,
     height: 150,
     justifyContent: "center",
+    backgroundColor: '#888'
   },
 });
 
