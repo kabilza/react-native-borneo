@@ -22,6 +22,28 @@ const defaultScreenOptions = {
   headerTintColor: "white",
 };
 
+const registrationScreens = ({ route }) => {
+  return (
+    <Drawer.Navigator>
+      <Stack.Screen
+        name="RegistrationListScreen"
+        component={RegistrationListScreen}
+        options={{
+          title: "Registration List",
+          headerShown: false,
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name="ios-list-sharp"
+              size={23}
+              color={drawerConfig.tintColor}
+            />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
+
 const afterLogin = ({ route }) => {
   return (
     <Drawer.Navigator
@@ -32,7 +54,7 @@ const afterLogin = ({ route }) => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          title: 'Home',
+          title: "Home",
           headerShown: true,
           drawerIcon: (drawerConfig) => (
             <Ionicons
@@ -47,8 +69,8 @@ const afterLogin = ({ route }) => {
       <Stack.Screen
         name="RegulationsScreen"
         component={RegulationsScreen}
-        options={{ 
-          title: 'Battery Regulations',
+        options={{
+          title: "Battery Regulations",
           headerShown: true,
           drawerIcon: (drawerConfig) => (
             <Ionicons
@@ -56,14 +78,14 @@ const afterLogin = ({ route }) => {
               size={23}
               color={drawerConfig.tintColor}
             />
-          )
-         }}
+          ),
+        }}
       />
       <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
-        options={{ 
-          title: 'Settings',
+        options={{
+          title: "Settings",
           headerShown: true,
           drawerIcon: (drawerConfig) => (
             <Ionicons
@@ -71,14 +93,14 @@ const afterLogin = ({ route }) => {
               size={23}
               color={drawerConfig.tintColor}
             />
-          )
-         }}
+          ),
+        }}
       />
       <Stack.Screen
         name="RegistrationListScreen"
         component={RegistrationListScreen}
-        options={{ 
-          title: 'Registration List',
+        options={{
+          title: "Registration List",
           headerShown: true,
           drawerIcon: (drawerConfig) => (
             <Ionicons
@@ -86,8 +108,8 @@ const afterLogin = ({ route }) => {
               size={23}
               color={drawerConfig.tintColor}
             />
-          )
-         }}
+          ),
+        }}
       />
     </Drawer.Navigator>
   );
@@ -117,10 +139,10 @@ const MainNavigator = () => {
       />
       <Stack.Screen
         name="RegistrationListScreen"
-        component={RegistrationListScreen}
-        options={{ 
-          headerShown: true
-         }}
+        component={registrationScreens}
+        options={{
+          headerShown: true,
+        }}
       />
     </Stack.Navigator>
   );

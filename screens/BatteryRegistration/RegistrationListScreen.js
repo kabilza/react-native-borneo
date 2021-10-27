@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect, useState} from "react";
 import {
   View,
   Text,
@@ -21,7 +21,16 @@ const RegistrationListScreen = (props) => {
   );
   const dispatch = useDispatch();
 
-  const dummyItem = ["item1", "item2"];
+    console.log(props);
+
+  const navigation = props.navigation;
+
+    useLayoutEffect(() => {
+        console.log(props);
+        navigation.setOptions({
+            headerTitle: "Add New Battery",
+        })
+    }, [navigation]);
 
   return (
     <View style={styles.container}>
