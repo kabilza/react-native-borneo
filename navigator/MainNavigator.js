@@ -27,7 +27,6 @@ const defaultScreenOptions = {
 
 const registrationScreens = (props) => {
   const {route} = props.route;
-  console.log(props);
   return (
     <BatteryRegistrationStack.Navigator
       initialRouteName="RegistrationListScreen"

@@ -4,26 +4,45 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 const INPUT_CHANGE = "INPUT_CHANGE";
 const INPUT_BLUR = "INPUT_BLUR";
 
+let initialState = {
+  value: "",
+  isValid: true,
+  touched: false,
+};
+
+const inputReducer = (action, state) => {
+  switch (action.type) {
+    case INPUT_CHANGE:
+        console.log(action.value);
+      return { ...state, value: action.value, isValid: action.isValid };
+    case INPUT_BLUR:
+      return {
+        ...state,
+        touched: true,
+      };
+    default:
+      return state;
+  }
+};
+
 const InputBox = (props) => {
-  const initialState = {
-    value: props.initialValue ? props.initialValue : "",
-    isValid: props.initiallyValid,
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    value: "",
+    isValid: true,
     touched: false,
-  };
+  });
 
-  const inputReducer = (action, state) => {
-    switch (action.type) {
-      case INPUT_CHANGE:
-        return "";
-      case INPUT_BLUR:
-        return "";
-        return state;
+  const { onInputChange, id } = props;
+
+  useEffect(() => {
+    if (inputState.touched) {
+      onInputChange(id, inputState.value, inputState.isValid);
     }
-  };
-
-  const [inputState, dispatch] = useReducer(inputReducer, initialState);
+  }, [inputState, onInputChange, id]);
 
   const textChangeHandler = (text) => {
+    // console.log("typing " + text);
+    // console.log(inputState.value);
     let isValid = true;
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
