@@ -58,6 +58,8 @@ const RegistrationAddEdit = (props) => {
   const dateInstalledInput = createRef();
   const navigation = props.navigation;
 
+  const dispatch = useDispatch();
+
   const initialFormState = {
     inputValues: {
       model: "",
@@ -109,13 +111,17 @@ const RegistrationAddEdit = (props) => {
   );
 
     const submitHandler = useCallback(() => {
-      console.log(formState);
       if (formState.formIsValid == false) {
         Alert.alert("Invalid input!", "Please check the errors in the form.", [
           { text: "Okay" },
         ]);
         return;
       }
+      dispatch(
+          batteryRegistrationAction.addNewBattery(
+            formState
+          )
+      );
     }, [formState]);
 
   return (

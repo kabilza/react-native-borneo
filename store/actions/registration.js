@@ -3,7 +3,7 @@ export const REMOVE_BATTERY = 'REMOVE_BATTERY'
 
 export const addNewBattery = battery => {
     return {
-        type: ADD_NEW_BATTERY, battery: battery
+        type: ADD_NEW_BATTERY, battery: battery.inputValues
     };
 };
 

@@ -11,7 +11,12 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case ADD_NEW_BATTERY:
-            return ''
+            let newState;
+            const dateInstalled = action.battery.dateInstalled;
+            const model = action.battery.model;
+            const newBattery = new BatteryRegistration('u5', dateInstalled, model, '05');
+            newState = {...state, prevRegistration: [...state.prevRegistration, newBattery]}
+            return newState;
         case REMOVE_BATTERY:
             return ''
     }
