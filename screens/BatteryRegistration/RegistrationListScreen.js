@@ -31,7 +31,6 @@ const RegistrationListScreen = (props) => {
                   iconName="ios-menu"
                   style={{ marginLeft: -10 }}
                   onPress={() => {
-                    console.log("pressed");
                     props.navigation.toggleDrawer();
                   }}
                 />
@@ -41,7 +40,6 @@ const RegistrationListScreen = (props) => {
                   iconName="ios-create"
                   style={{ marginRight: -4, marginBottom: 1 }}
                   onPress={() => {
-                    console.log("pressed");
                     props.navigation.push('RegistrationAddEdit')
                   }}
                 />

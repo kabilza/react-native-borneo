@@ -1,19 +1,20 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, forwardRef } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 const INPUT_CHANGE = "INPUT_CHANGE";
 const INPUT_BLUR = "INPUT_BLUR";
 
-let initialState = {
+const initialState = {
   value: "",
   isValid: true,
   touched: false,
 };
 
-const inputReducer = (action, state) => {
+const inputReducer = (state, action) => {
   switch (action.type) {
     case INPUT_CHANGE:
-        console.log(action.value);
+        // console.log("prev state" + action.value);
+        // console.log("input is changing " + action.value);
       return { ...state, value: action.value, isValid: action.isValid };
     case INPUT_BLUR:
       return {
@@ -25,25 +26,22 @@ const inputReducer = (action, state) => {
   }
 };
 
-const InputBox = (props) => {
-  const [inputState, dispatch] = useReducer(inputReducer, {
-    value: "",
-    isValid: true,
-    touched: false,
-  });
+const InputBox = forwardRef((props, ref) => {
+  const [inputState, dispatch] = useReducer(inputReducer, initialState);
 
   const { onInputChange, id } = props;
 
   useEffect(() => {
     if (inputState.touched) {
-      onInputChange(id, inputState.value, inputState.isValid);
+      onInputChange(id, inputState.value, inputState.isValid); //firing to parent comp screen
     }
   }, [inputState, onInputChange, id]);
 
-  const textChangeHandler = (text) => {
-    // console.log("typing " + text);
-    // console.log(inputState.value);
+  const textChangeHandler = text => {
     let isValid = true;
+    if (text == ""){
+        isValid = false;
+    }
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
 
@@ -60,6 +58,7 @@ const InputBox = (props) => {
         value={inputState.value}
         onChangeText={textChangeHandler}
         onBlur={lostFocusHandler}
+        ref={ref}
       />
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
@@ -68,7 +67,7 @@ const InputBox = (props) => {
       )}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   formControl: {

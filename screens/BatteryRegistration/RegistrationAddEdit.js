@@ -1,4 +1,11 @@
-import React, { useLayoutEffect, useState, useReducer, useCallback } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useReducer,
+  useCallback,
+  createRef,
+} from "react";
 import {
   View,
   ScrollView,
@@ -16,12 +23,14 @@ import * as batteryRegistrationAction from "../../store/actions/registration";
 import BodyText from "../../components/BodyText";
 import TitleText from "../../components/TitleText";
 import InputBox from "../../components/InputBox";
+import MyHeaderIcon from "../../components/MyHeaderIcon";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 // declare reducer outside to prevent re-creation of the function
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
+    let newState = {};
     const updatedValues = {
       ...state.inputValues,
       [action.input]: action.value,
@@ -34,48 +43,61 @@ const formReducer = (state, action) => {
     for (const key in updatedValidities) {
       updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
     }
-    return {
-      formIsValid: updatedFormIsValid,
-      inputValidities: updatedValidities,
+    newState = {
       inputValues: updatedValues,
+      inputValidities: updatedValidities,
+      formIsValid: updatedFormIsValid,
     };
+    console.log(newState);
+    return newState;
   }
   return state;
 };
 
 const RegistrationAddEdit = (props) => {
+  const dateInstalledInput = createRef();
   const navigation = props.navigation;
 
   const initialFormState = {
     inputValues: {
-      title: "",
-      imageUrl: "",
-      description: "",
-      price: "",
+      model: "",
+      dateInstalled: "",
     },
     inputValidities: {
-      title: false,
-      imageUrl: false,
-      description: false,
-      price: false,
+      model: false,
+      dateInstalled: false,
     },
     formIsValid: false,
   };
 
+  const [formState, dispatchFormState] = useReducer(
+    formReducer,
+    initialFormState
+  );
+
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "Add New Battery",
+      headerRight: () => {
+        return (
+          <MyHeaderIcon
+            iconName="ios-checkmark"
+            style={{ marginRight: -4, marginBottom: 1 }}
+            onPress={submitHandler}
+          />
+        );
+      },
     });
-  }, [navigation]);
+  }, [navigation, formState, submitHandler]);
 
-  const [formState, dispatchFormState] = useReducer(formReducer, initialFormState);
 
   const inputChangeHandler = useCallback(
     // passing args from Input components
     (inputIdentifier, inputValue, inputValidity) => {
-        // console.log(inputIdentifier)
-        // console.log(inputValue)
-        // console.log(inputValidity)
+      // console.log(inputIdentifier)
+      console.log("input from child " + inputIdentifier + " " + inputValue);
+      // console.log(inputValidity)
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue, //value from child
@@ -86,9 +108,19 @@ const RegistrationAddEdit = (props) => {
     [dispatchFormState]
   );
 
+    const submitHandler = useCallback(() => {
+      console.log(formState);
+      if (formState.formIsValid == false) {
+        Alert.alert("Invalid input!", "Please check the errors in the form.", [
+          { text: "Okay" },
+        ]);
+        return;
+      }
+    }, [formState]);
+
   return (
     <View style={styles.container}>
-      <TitleText>This is add new battery screen!</TitleText>
+      <TitleText>Register your new Battery</TitleText>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
@@ -98,14 +130,17 @@ const RegistrationAddEdit = (props) => {
           <View style={styles.form}>
             <InputBox
               id="model"
-              label="Model"
+              label="Battery Model"
               errorText="Please enter a valid model!"
               keyboardType="default"
               autoCapitalize="sentences"
               autoCorrect
               returnKeyType="next"
               onInputChange={inputChangeHandler}
-            //   initialValue={""}
+              onSubmitEditing={() =>
+                dateInstalledInput.current && dateInstalledInput.current.focus()
+              }
+              //   initialValue={""}
               //   initiallyValid={!!editedProduct}
               required
             />
@@ -115,9 +150,10 @@ const RegistrationAddEdit = (props) => {
               errorText="Please enter a valid date!"
               keyboardType="default"
               autoCorrect
-              returnKeyType="next"
+              returnKeyType="done"
+              ref={dateInstalledInput}
               onInputChange={inputChangeHandler}
-            //   initialValue={""}
+              //   initialValue={""}
               //   initiallyValid={!!editedProduct}
               required
             />
