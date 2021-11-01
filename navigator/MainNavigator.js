@@ -13,6 +13,7 @@ import SettingsScreen from "../screens/SettingsScreen";
 import RegulationsScreen from "../screens/RegulationsScreen";
 import RegistrationListScreen from "../screens/BatteryRegistration/RegistrationListScreen";
 import RegistrationAddEdit from "../screens/BatteryRegistration/RegistrationAddEdit";
+import BatteryDetailScreen from "../screens/BatteryRegistration/BatteryDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,6 +36,10 @@ const registrationScreens = (props) => {
       <Stack.Screen
         name="RegistrationListScreen"
         component={RegistrationListScreen}
+      />
+      <Stack.Screen
+        name="BatteryDetailScreen"
+        component={BatteryDetailScreen}
       />
       <Stack.Screen
         name="RegistrationAddEdit"

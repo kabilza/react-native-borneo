@@ -25,7 +25,8 @@ const BatteryItem = (props) => {
           <View>
             <View style={styles.details}>
               <Text style={styles.title}>Battery Model: {props.model}</Text>
-              <Text style={styles.bodyDetails}>Date Installed: {props.details}</Text>
+              <Text style={styles.bodyDetails}>Date Installed: {props.dateInstalled}</Text>
+              <Text style={styles.bodyDetails}>ID: {props.batteryId}</Text>
             </View>
             {/* <View style={styles.actions}>{props.children}</View> */}
           </View>

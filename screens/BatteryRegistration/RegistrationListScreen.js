@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState} from "react";
+import React, { useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
@@ -20,49 +20,59 @@ const RegistrationListScreen = (props) => {
   const previouslyRegisteredBattery = useSelector(
     (state) => state.registration.prevRegistration
   );
-  const dispatch = useDispatch();
-  
-    useLayoutEffect(() => {
-        // console.log(props);
-        props.navigation.setOptions({
-            headerTitle: "Previously Registered List",
-            headerLeft: () => (
-                <MyHeaderIcon
-                  iconName="ios-menu"
-                  style={{ marginLeft: -10 }}
-                  onPress={() => {
-                    props.navigation.toggleDrawer();
-                  }}
-                />
-              ),
-            headerRight: () => (
-                <MyHeaderIcon
-                  iconName="ios-create"
-                  style={{ marginRight: -4, marginBottom: 1 }}
-                  onPress={() => {
-                    props.navigation.push('RegistrationAddEdit')
-                  }}
-                />
-              ),
-        })
-    }, [props.navigation]);
+
+  useLayoutEffect(() => {
+    // console.log(props);
+    props.navigation.setOptions({
+      headerTitle: "Previously Registered List",
+      headerLeft: () => (
+        <MyHeaderIcon
+          iconName="ios-menu"
+          style={{ marginLeft: -10 }}
+          onPress={() => {
+            props.navigation.toggleDrawer();
+          }}
+        />
+      ),
+      headerRight: () => (
+        <MyHeaderIcon
+          iconName="ios-create"
+          style={{ marginRight: -4, marginBottom: 1 }}
+          onPress={() => {
+            props.navigation.push("RegistrationAddEdit");
+          }}
+        />
+      ),
+    });
+  }, [props.navigation]);
+
+  console.log(previouslyRegisteredBattery);
 
   return (
     <View style={styles.container}>
       <TitleText>Previously Registered Battery</TitleText>
-        <FlatList
-          data={previouslyRegisteredBattery}
-          keyExtractor={(item) => item.id}
-          renderItem={(itemData) => (
-            <BatteryItem
-              model={itemData.item.model}
-              details={itemData.item.dateInstalled}
-              onSelect={() => {
-                console.log("item selected");
-              }}
-            />
-          )}
-        />
+      <FlatList
+        data={previouslyRegisteredBattery}
+        keyExtractor={(item, index) => item.id.toString()}
+        renderItem={(itemData) => (
+          <BatteryItem
+            barcode={itemData.item.barcode}
+            brand={itemData.item.brand}
+            model={itemData.item.model}
+            type={itemData.item.type}
+            warrantyPeriod={itemData.item.warrantyPeriod}
+            dateInstalled={itemData.item.dateInstalled}
+            shopName={itemData.item.shopName}
+            shopProvince={itemData.item.shopProvince}
+            shopDistrict={itemData.item.shopDistrict}
+            shopPhoneNumber={itemData.item.shopPhoneNumber}
+            batteryId={itemData.item.id}
+            onSelect={() => {
+              props.navigation.navigate("BatteryDetailScreen", { itemId: itemData.item.id });
+            }}
+          />
+        )}
+      />
     </View>
   );
 };
@@ -75,18 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 15,
   },
-//   listContainer: {
-//     width: "100%",
-//     height: 30,
-//     padding: 20,
-//   },
-//   homeCard: {
-//     alignItems: "center",
-//     marginBottom: 10,
-//     width: "70%",
-//     height: 150,
-//     justifyContent: "center",
-//   },
 });
 
 export default RegistrationListScreen;
