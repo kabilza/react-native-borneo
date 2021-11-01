@@ -56,18 +56,43 @@ const formReducer = (state, action) => {
 
 const RegistrationAddEdit = (props) => {
   const dateInstalledInput = createRef();
+  const batteryBrandInput = createRef();
+  const batteryModelInput = createRef();
+  const batteryBarcodeInput = createRef();
+  const batteryTypeInput = createRef();
+  const warrantyPeriodInput = createRef();
+  const shopNameInput = createRef();
+  const shopProvinceInput = createRef();
+  const shopDistrictInput = createRef();
+  const shopPhoneNumberInput = createRef();
   const navigation = props.navigation;
 
   const dispatch = useDispatch();
 
   const initialFormState = {
     inputValues: {
-      model: "",
+      batteryBarcode: "",
+      batteryBrand: "",
+      batteryType: "",
       dateInstalled: "",
+      model: "",
+      shopDistrict: "",
+      shopName: "",
+      shopPhoneNumber: "",
+      shopProvince: "",
+      warrantyPeriod: "",
     },
     inputValidities: {
-      model: false,
+      batteryBarcode: false,
+      batteryBrand: false,
+      batteryType: false,
       dateInstalled: false,
+      model: false,
+      shopDistrict: false,
+      shopName: false,
+      shopPhoneNumber: false,
+      shopProvince: false,
+      warrantyPeriod: false,
     },
     formIsValid: false,
   };
@@ -76,7 +101,6 @@ const RegistrationAddEdit = (props) => {
     formReducer,
     initialFormState
   );
-
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -92,7 +116,6 @@ const RegistrationAddEdit = (props) => {
       },
     });
   }, [navigation, formState, submitHandler]);
-
 
   const inputChangeHandler = useCallback(
     // passing args from Input components
@@ -110,19 +133,15 @@ const RegistrationAddEdit = (props) => {
     [dispatchFormState]
   );
 
-    const submitHandler = useCallback(() => {
-      if (formState.formIsValid == false) {
-        Alert.alert("Invalid input!", "Please check the errors in the form.", [
-          { text: "Okay" },
-        ]);
-        return;
-      }
-      dispatch(
-          batteryRegistrationAction.addNewBattery(
-            formState
-          )
-      );
-    }, [formState]);
+  const submitHandler = useCallback(() => {
+    if (formState.formIsValid == false) {
+      Alert.alert("Invalid input!", "Please check the errors in the form.", [
+        { text: "Okay" },
+      ]);
+      return;
+    }
+    dispatch(batteryRegistrationAction.addNewBattery(formState));
+  }, [formState]);
 
   return (
     <View style={styles.container}>
@@ -135,32 +154,133 @@ const RegistrationAddEdit = (props) => {
         <ScrollView>
           <View style={styles.form}>
             <InputBox
-              id="model"
-              label="Battery Model"
-              errorText="Please enter a valid model!"
-              keyboardType="default"
-              autoCapitalize="sentences"
-              autoCorrect
-              returnKeyType="next"
-              onInputChange={inputChangeHandler}
-              onSubmitEditing={() =>
-                dateInstalledInput.current && dateInstalledInput.current.focus()
-              }
-              //   initialValue={""}
-              //   initiallyValid={!!editedProduct}
-              required
-            />
-            <InputBox
               id="dateInstalled"
               label="Date Installed"
               errorText="Please enter a valid date!"
               keyboardType="default"
-              autoCorrect
-              returnKeyType="done"
+              returnKeyType="next"
               ref={dateInstalledInput}
               onInputChange={inputChangeHandler}
-              //   initialValue={""}
-              //   initiallyValid={!!editedProduct}
+              onSubmitEditing={() =>
+                batteryBrandInput.current && batteryBrandInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="batteryBrand"
+              label="Battery Brand"
+              errorText="Please enter a valid brand!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={batteryBrandInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                batteryModelInput.current && batteryModelInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="model"
+              label="Battery Model"
+              errorText="Please enter a valid model!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={batteryModelInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                batteryBarcodeInput.current &&
+                batteryBarcodeInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="batteryBarcode"
+              label="Battery Barcode"
+              errorText="Please enter a valid barcode!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={batteryBarcodeInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                batteryTypeInput.current && batteryTypeInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="batteryType"
+              label="Battery Type"
+              errorText="Please enter a valid battery type!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={batteryTypeInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                warrantyPeriodInput.current &&
+                warrantyPeriodInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="warrantyPeriod"
+              label="Warranty Period"
+              errorText="Please enter a valid period!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={warrantyPeriodInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                shopNameInput.current && shopNameInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="shopName"
+              label="Shop Name"
+              errorText="Please enter a valid shop name!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={shopNameInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                shopProvinceInput.current && shopProvinceInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="shopProvince"
+              label="Shop Province"
+              errorText="Please enter a valid province!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={shopProvinceInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                shopDistrictInput.current && shopDistrictInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="shopDistrict"
+              label="Shop District"
+              errorText="Please enter a valid shop district!"
+              keyboardType="default"
+              returnKeyType="next"
+              ref={shopDistrictInput}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                shopPhoneNumberInput.current &&
+                shopPhoneNumberInput.current.focus()
+              }
+              required
+            />
+            <InputBox
+              id="shopPhoneNumber"
+              label="Shop Phone Number"
+              errorText="Please enter a valid number!"
+              keyboardType="default"
+              returnKeyType="done"
+              ref={shopPhoneNumberInput}
+              onInputChange={inputChangeHandler}
               required
             />
           </View>

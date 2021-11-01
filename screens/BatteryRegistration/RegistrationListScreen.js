@@ -46,7 +46,6 @@ const RegistrationListScreen = (props) => {
     });
   }, [props.navigation]);
 
-  console.log(previouslyRegisteredBattery);
 
   return (
     <View style={styles.container}>
