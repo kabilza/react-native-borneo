@@ -52,13 +52,29 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_NEW_BATTERY:
       let newState;
-      const dateInstalled = action.battery.dateInstalled;
-      const model = action.battery.model;
+      const batteryBarcode = action.battery.batteryBarcode;
+      const batteryBrand = action.battery.batteryBrand
+      const batteryType = action.battery.batteryType
+      const dateInstalled = action.battery.dateInstalled
+      const model = action.battery.model
+      const shopDistrict = action.battery.shopDistrict
+      const shopName = action.battery.shopName
+      const shopPhoneNumber = action.battery.shopPhoneNumber
+      const shopProvince = action.battery.shopProvince
+      const warrantyPeriod = action.battery.warrantyPeriod
       const newBattery = new BatteryRegistration(
         "u5",
+        batteryBarcode,
+        batteryBrand,
+        batteryType,
+        warrantyPeriod,
         dateInstalled,
         model,
-        "05"
+        shopName,
+        shopProvince,
+        shopDistrict,
+        shopPhoneNumber,
+        "004"
       );
       newState = {
         ...state,

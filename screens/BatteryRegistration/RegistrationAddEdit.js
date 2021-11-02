@@ -141,6 +141,10 @@ const RegistrationAddEdit = (props) => {
       return;
     }
     dispatch(batteryRegistrationAction.addNewBattery(formState));
+    Alert.alert("Form Received!", "Registration Success!", [
+        { text: "Okay" },
+      ]);
+    navigation.goBack();
   }, [formState]);
 
   return (
