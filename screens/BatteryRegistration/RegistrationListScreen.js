@@ -90,7 +90,8 @@ const RegistrationListScreen = (props) => {
   if (!isLoading && previouslyRegisteredBattery.length === 0) {
     return (
       <View style={styles.centered}>
-        <Text>No products found. Maybe start adding some!</Text>
+        <Text>No previous registration found.</Text>
+        <Text>Start adding some by tapping top right button!</Text>
       </View>
     );
   }

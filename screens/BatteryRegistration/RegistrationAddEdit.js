@@ -59,13 +59,15 @@ const formReducer = (state, action) => {
 const RegistrationAddEdit = (props) => {
   const [date, setDate] = useState(new Date(1598051730000));
 
-  const onChange = (event, selectedDate) => {
+  //   const onChange = (event, selectedDate) => {
+  //     const currentDate = selectedDate || date;
+  //     setDate(currentDate);
+  //     submitDateInput();
+  //   };
+
+  const submitDateInput = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    submitDateInput();
-  };
-
-  const submitDateInput = () => {
     const simplifiedDate = date.toISOString().split("T")[0];
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
@@ -74,6 +76,11 @@ const RegistrationAddEdit = (props) => {
       input: "dateInstalled", //inputId from child comp
     });
   };
+
+//   useEffect(() => {
+//     const currentDate = date;
+//     setDate(currentDate);
+//   }, [date]);
 
   const dateInstalledInput = createRef();
   const batteryBrandInput = createRef();
@@ -135,6 +142,8 @@ const RegistrationAddEdit = (props) => {
         );
       },
     });
+    const currentDate = date;
+    setDate(currentDate);
   }, [navigation, formState, submitHandler]);
 
   const inputChangeHandler = useCallback(
@@ -175,30 +184,17 @@ const RegistrationAddEdit = (props) => {
       >
         <ScrollView>
           <View style={styles.form}>
-            {/* <InputBox
-              id="dateInstalled"
-              label="Date Installed"
-              errorText="Please enter a valid date!"
-              keyboardType="default"
-              returnKeyType="next"
-              ref={dateInstalledInput}
-              onInputChange={inputChangeHandler}
-              onSubmitEditing={() =>
-                batteryBrandInput.current && batteryBrandInput.current.focus()
-              }
-              required
-            /> */}
             <View>
               <View>
                 <Text>Date Installed: </Text>
               </View>
               <DateTimePicker
                 testID="dateTimePicker"
-                value={date}
+                value={date} // *** This might be problematic ***
                 mode="date"
                 is24Hour={true}
                 display="default"
-                onChange={onChange}
+                onChange={submitDateInput}
               />
             </View>
             <InputBox
@@ -208,6 +204,7 @@ const RegistrationAddEdit = (props) => {
               keyboardType="default"
               returnKeyType="next"
               ref={batteryBrandInput}
+              autoCorrect={false}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
                 batteryModelInput.current && batteryModelInput.current.focus()
@@ -221,6 +218,7 @@ const RegistrationAddEdit = (props) => {
               keyboardType="default"
               returnKeyType="next"
               ref={batteryModelInput}
+              autoCorrect={false}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
                 batteryBarcodeInput.current &&
@@ -234,6 +232,7 @@ const RegistrationAddEdit = (props) => {
               errorText="Please enter a valid barcode!"
               keyboardType="default"
               returnKeyType="next"
+              autoCorrect={false}
               ref={batteryBarcodeInput}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
@@ -248,6 +247,7 @@ const RegistrationAddEdit = (props) => {
               keyboardType="default"
               returnKeyType="next"
               ref={batteryTypeInput}
+              autoCorrect={false}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
                 warrantyPeriodInput.current &&
@@ -262,6 +262,7 @@ const RegistrationAddEdit = (props) => {
               keyboardType="default"
               returnKeyType="next"
               ref={warrantyPeriodInput}
+              autoCorrect={false}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
                 shopNameInput.current && shopNameInput.current.focus()
@@ -275,6 +276,7 @@ const RegistrationAddEdit = (props) => {
               keyboardType="default"
               returnKeyType="next"
               ref={shopNameInput}
+              autoCorrect={false}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
                 shopProvinceInput.current && shopProvinceInput.current.focus()
@@ -288,6 +290,7 @@ const RegistrationAddEdit = (props) => {
               keyboardType="default"
               returnKeyType="next"
               ref={shopProvinceInput}
+              autoCorrect={false}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
                 shopDistrictInput.current && shopDistrictInput.current.focus()
@@ -301,6 +304,7 @@ const RegistrationAddEdit = (props) => {
               keyboardType="default"
               returnKeyType="next"
               ref={shopDistrictInput}
+              autoCorrect={false}
               onInputChange={inputChangeHandler}
               onSubmitEditing={() =>
                 shopPhoneNumberInput.current &&
@@ -314,6 +318,7 @@ const RegistrationAddEdit = (props) => {
               errorText="Please enter a valid number!"
               keyboardType="default"
               returnKeyType="done"
+              autoCorrect={false}
               ref={shopPhoneNumberInput}
               onInputChange={inputChangeHandler}
               required
