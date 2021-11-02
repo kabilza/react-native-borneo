@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -15,11 +16,26 @@ import TitleText from "../../components/TitleText";
 import MyHeaderIcon from "../../components/MyHeaderIcon";
 import * as batteryRegistrationAction from "../../store/actions/registration";
 import { Item } from "react-navigation-header-buttons";
+import Colors from "../../constants/Colors";
 
 const RegistrationListScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
   const previouslyRegisteredBattery = useSelector(
     (state) => state.registration.prevRegistration
   );
+
+  const loadRegis = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(batteryRegistrationAction.fetchRegistration());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setIsLoading, setError]);
 
   useLayoutEffect(() => {
     // console.log(props);
@@ -46,13 +62,45 @@ const RegistrationListScreen = (props) => {
     });
   }, [props.navigation]);
 
+  useEffect(() => {
+      loadRegis();
+  }, [dispatch, loadRegis])
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error occurred!</Text>
+        <Button
+          title="Try again"
+          onPress={loadRegis}
+          color={Colors.primaryColor}
+        />
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      </View>
+    );
+  }
+
+  if (!isLoading && previouslyRegisteredBattery.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text>No products found. Maybe start adding some!</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <TitleText>Previously Registered Battery</TitleText>
       <FlatList
         data={previouslyRegisteredBattery}
-        keyExtractor={(item, index) => item.id.toString()}
+        keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (
           <BatteryItem
             barcode={itemData.item.barcode}
@@ -67,7 +115,9 @@ const RegistrationListScreen = (props) => {
             shopPhoneNumber={itemData.item.shopPhoneNumber}
             batteryId={itemData.item.id}
             onSelect={() => {
-              props.navigation.navigate("BatteryDetailScreen", { itemId: itemData.item.id });
+              props.navigation.navigate("BatteryDetailScreen", {
+                itemId: itemData.item.id,
+              });
             }}
           />
         )}
@@ -83,6 +133,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     padding: 15,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

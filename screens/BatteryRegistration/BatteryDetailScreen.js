@@ -30,9 +30,6 @@ const BatteryDetailScreen = (props) => {
   let copiedItem = allBattery.map((item) => item);
   let filteredItem = copiedItem.find((item) => item.id == selectedId);
 
-  //   console.log("New Screen!");
-  //   console.log(selectedItem2);
-
   return (
     <View style={styles.container}>
       <View style={styles.listContainer}>
