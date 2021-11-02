@@ -15,9 +15,11 @@ import {
   KeyboardAvoidingView,
   Text,
   Input,
+  Button,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import * as batteryRegistrationAction from "../../store/actions/registration";
 import BodyText from "../../components/BodyText";
@@ -55,6 +57,24 @@ const formReducer = (state, action) => {
 };
 
 const RegistrationAddEdit = (props) => {
+  const [date, setDate] = useState(new Date(1598051730000));
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+    submitDateInput();
+  };
+
+  const submitDateInput = () => {
+    const simplifiedDate = date.toISOString().split("T")[0];
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: simplifiedDate, //value from child
+      isValid: true, //isValid from child
+      input: "dateInstalled", //inputId from child comp
+    });
+  };
+
   const dateInstalledInput = createRef();
   const batteryBrandInput = createRef();
   const batteryModelInput = createRef();
@@ -141,9 +161,7 @@ const RegistrationAddEdit = (props) => {
       return;
     }
     dispatch(batteryRegistrationAction.addNewBattery(formState));
-    Alert.alert("Form Received!", "Registration Success!", [
-        { text: "Okay" },
-      ]);
+    Alert.alert("Form Received!", "Registration Success!", [{ text: "Okay" }]);
     navigation.goBack();
   }, [formState]);
 
@@ -157,7 +175,7 @@ const RegistrationAddEdit = (props) => {
       >
         <ScrollView>
           <View style={styles.form}>
-            <InputBox
+            {/* <InputBox
               id="dateInstalled"
               label="Date Installed"
               errorText="Please enter a valid date!"
@@ -169,7 +187,20 @@ const RegistrationAddEdit = (props) => {
                 batteryBrandInput.current && batteryBrandInput.current.focus()
               }
               required
-            />
+            /> */}
+            <View>
+              <View>
+                <Text>Date Installed: </Text>
+              </View>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            </View>
             <InputBox
               id="batteryBrand"
               label="Battery Brand"
