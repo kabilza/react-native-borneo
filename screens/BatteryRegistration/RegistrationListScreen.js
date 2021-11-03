@@ -1,4 +1,9 @@
-import React, { useLayoutEffect, useState, useCallback, useEffect } from "react";
+import React, {
+  useLayoutEffect,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import {
   View,
   Text,
@@ -27,6 +32,7 @@ const RegistrationListScreen = (props) => {
   );
 
   const loadRegis = useCallback(async () => {
+    console.log("fetching again...");
     setError(null);
     setIsLoading(true);
     try {
@@ -63,8 +69,16 @@ const RegistrationListScreen = (props) => {
   }, [props.navigation]);
 
   useEffect(() => {
-      loadRegis();
-  }, [dispatch, loadRegis])
+    console.log('focus')
+    const willFocusSub = props.navigation.addListener("focus", loadRegis);
+    return () => {
+      willFocusSub;
+    };
+  }, [loadRegis]);
+
+  useEffect(() => {
+    loadRegis();
+  }, [dispatch, loadRegis]);
 
   if (error) {
     return (
@@ -82,7 +96,7 @@ const RegistrationListScreen = (props) => {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <ActivityIndicator size="large" color="black" />
       </View>
     );
   }
@@ -98,7 +112,7 @@ const RegistrationListScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <TitleText>Previously Registered Battery</TitleText>
+      <TitleText>Registered Battery</TitleText>
       <FlatList
         data={previouslyRegisteredBattery}
         keyExtractor={(item, index) => item.id}

@@ -1,4 +1,8 @@
-import { ADD_NEW_BATTERY, REMOVE_BATTERY, SET_REGIS } from "../actions/registration";
+import {
+  ADD_NEW_BATTERY,
+  REMOVE_BATTERY,
+  SET_REGIS,
+} from "../actions/registration";
 import BatteryRegistration from "../../models/batteryRegistration";
 
 const initialState = {
@@ -51,22 +55,22 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_REGIS:
-        return {
-            ...state,
-            prevRegistration: action.registration
-        }
+      return {
+        ...state,
+        prevRegistration: action.registration,
+      };
     case ADD_NEW_BATTERY:
       let newState;
       const batteryBarcode = action.battery.batteryBarcode;
-      const batteryBrand = action.battery.batteryBrand
-      const batteryType = action.battery.batteryType
-      const dateInstalled = action.battery.dateInstalled
-      const model = action.battery.model
-      const shopDistrict = action.battery.shopDistrict
-      const shopName = action.battery.shopName
-      const shopPhoneNumber = action.battery.shopPhoneNumber
-      const shopProvince = action.battery.shopProvince
-      const warrantyPeriod = action.battery.warrantyPeriod
+      const batteryBrand = action.battery.batteryBrand;
+      const batteryType = action.battery.batteryType;
+      const dateInstalled = action.battery.dateInstalled;
+      const model = action.battery.model;
+      const shopDistrict = action.battery.shopDistrict;
+      const shopName = action.battery.shopName;
+      const shopPhoneNumber = action.battery.shopPhoneNumber;
+      const shopProvince = action.battery.shopProvince;
+      const warrantyPeriod = action.battery.warrantyPeriod;
       const receivedId = action.id;
       const newBattery = new BatteryRegistration(
         "u5",
@@ -88,7 +92,12 @@ export default (state = initialState, action) => {
       };
       return newState;
     case REMOVE_BATTERY:
-      return "";
+      return {
+        ...state,
+        prevRegistration: state.prevRegistration.filter(
+          item => item.id !== action.batteryId
+        ),
+      };
   }
   return state;
 };

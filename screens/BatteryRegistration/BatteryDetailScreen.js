@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Alert
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -14,21 +15,43 @@ import BatteryItem from "../../components/BatteryItem";
 import TitleText from "../../components/TitleText";
 import MyHeaderIcon from "../../components/MyHeaderIcon";
 import Colors from "../../constants/Colors";
+import * as batteryRegistrationAction from "../../store/actions/registration";
+
 
 const BatteryDetailScreen = (props) => {
   const allBattery = useSelector(
     (state) => state.registration.prevRegistration
   );
 
+  const dispatch = useDispatch();
+
   useLayoutEffect(() => {
     props.navigation.setOptions({
       headerTitle: "Registration Details",
+      headerRight: () => (
+        <MyHeaderIcon
+          iconName="ios-trash"
+          style={{ marginLeft: -10 }}
+          onPress={confirmDelete}
+        />
+      ),
     });
   }, [props.navigation]);
 
   let selectedId = props.route.params.itemId;
   let copiedItem = allBattery.map((item) => item);
   let filteredItem = copiedItem.find((item) => item.id == selectedId);
+
+  const confirmDelete = () => {
+    Alert.alert("Are you sure?", "This item will be deleted. Continue?", [{ text: "Yes", onPress: deleteHandler, style: 'destructive' }, { text: "No", style: 'cancel' }])
+  }
+
+  const deleteHandler = () => {
+    props.navigation.goBack();
+    console.log('delete id ' + selectedId)
+    dispatch(batteryRegistrationAction.removeBattery(selectedId))
+    Alert.alert("Deleted!", "Item Deleted!", [{ text: "Okay" }]);
+  }
 
   return (
     <View style={styles.container}>

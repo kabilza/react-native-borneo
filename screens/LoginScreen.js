@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
                 color: "white",
               }}
             >
-              This is a login screen!
+              Login
             </Text>
             <View>
               <TextInput

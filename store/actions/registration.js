@@ -20,7 +20,7 @@ export const fetchRegistration = () => {
       for (const key in resData) {
         loadedRegistration.push(
           new BatteryRegistration(
-            'u1',
+            "u1",
             resData[key].batteryBarcode,
             resData[key].batteryBrand,
             resData[key].batteryType,
@@ -37,8 +37,7 @@ export const fetchRegistration = () => {
       }
 
       dispatch({ type: SET_REGIS, registration: loadedRegistration });
-    } 
-    catch (err) {
+    } catch (err) {
       throw err;
     }
   };
@@ -46,11 +45,7 @@ export const fetchRegistration = () => {
 
 export const addNewBattery = (battery) => {
   return async (dispatch) => {
-    console.log("got new battery!");
-    console.log(battery);
-
     const { inputValues } = battery;
-    console.log(inputValues);
 
     const response = await fetch(
       "https://rn-battery-app-default-rtdb.asia-southeast1.firebasedatabase.app/batteryregistration.json",
@@ -74,8 +69,14 @@ export const addNewBattery = (battery) => {
 };
 
 export const removeBattery = (batteryId) => {
-  return {
-    type: REMOVE_BATTERY,
-    batteryId: batteryId,
+  return async (dispatch) => {
+    await fetch(
+      `https://rn-battery-app-default-rtdb.asia-southeast1.firebasedatabase.app/batteryregistration/${batteryId}.json`,
+      { method: "DELETE" }
+    );
+    dispatch({
+      type: REMOVE_BATTERY,
+      batteryId: batteryId,
+    });
   };
 };
