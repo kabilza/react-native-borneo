@@ -32,7 +32,6 @@ const RegistrationListScreen = (props) => {
   );
 
   const loadRegis = useCallback(async () => {
-    console.log("fetching again...");
     setError(null);
     setIsLoading(true);
     try {
@@ -69,7 +68,6 @@ const RegistrationListScreen = (props) => {
   }, [props.navigation]);
 
   useEffect(() => {
-    console.log('focus')
     const willFocusSub = props.navigation.addListener("focus", loadRegis);
     return () => {
       willFocusSub;

@@ -43,7 +43,7 @@ export const fetchRegistration = () => {
   };
 };
 
-export const addNewBattery = (battery) => {
+export const addNewBattery = (battery) => { //Error here fake
   return async (dispatch) => {
     const { inputValues } = battery;
 
@@ -57,6 +57,10 @@ export const addNewBattery = (battery) => {
         body: JSON.stringify(inputValues),
       }
     );
+
+    if (!response.ok) {
+      throw new Error('Please wait a little bit then submit again...');
+    }
 
     const resData = await response.json();
 

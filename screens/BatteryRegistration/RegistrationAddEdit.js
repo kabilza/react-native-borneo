@@ -58,12 +58,8 @@ const formReducer = (state, action) => {
 
 const RegistrationAddEdit = (props) => {
   const [date, setDate] = useState(new Date(1598051730000));
-
-  //   const onChange = (event, selectedDate) => {
-  //     const currentDate = selectedDate || date;
-  //     setDate(currentDate);
-  //     submitDateInput();
-  //   };
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const submitDateInput = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -76,7 +72,6 @@ const RegistrationAddEdit = (props) => {
       input: "dateInstalled", //inputId from child comp
     });
   };
-
 
   const dateInstalledInput = createRef();
   const batteryBrandInput = createRef();
@@ -148,9 +143,9 @@ const RegistrationAddEdit = (props) => {
       // console.log(inputValidity)
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
-        value: inputValue, 
+        value: inputValue,
         isValid: inputValidity,
-        input: inputIdentifier, 
+        input: inputIdentifier,
       });
     },
     [dispatchFormState]
@@ -158,19 +153,34 @@ const RegistrationAddEdit = (props) => {
 
   useEffect(() => {
     submitDateInput(date);
-  }, [])
+  }, []);
 
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async () => {
     if (formState.formIsValid == false) {
       Alert.alert("Invalid input!", "Please check the errors in the form.", [
         { text: "Okay" },
       ]);
       return;
     }
-    dispatch(batteryRegistrationAction.addNewBattery(formState));
-    Alert.alert("Form Received!", "Registration Success!", [{ text: "Okay" }]);
-    navigation.goBack();
+    setIsLoading(true);
+    setError(null);
+    try {
+      await dispatch(batteryRegistrationAction.addNewBattery(formState));
+      setIsLoading(false);
+      Alert.alert("Form Received!", "Registration Success!", [
+        { text: "Okay" },
+      ]);
+      navigation.goBack();
+    } catch (err) {
+      setError(err.message);
+    }
   }, [formState]);
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Something wrong!", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
 
   return (
     <View style={styles.container}>
