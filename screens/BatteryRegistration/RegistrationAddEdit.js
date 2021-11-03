@@ -68,7 +68,7 @@ const RegistrationAddEdit = (props) => {
   const submitDateInput = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    const simplifiedDate = date.toISOString().split("T")[0];
+    const simplifiedDate = currentDate.toISOString().split("T")[0];
     dispatchFormState({
       type: FORM_INPUT_UPDATE,
       value: simplifiedDate, //value from child
@@ -77,10 +77,6 @@ const RegistrationAddEdit = (props) => {
     });
   };
 
-//   useEffect(() => {
-//     const currentDate = date;
-//     setDate(currentDate);
-//   }, [date]);
 
   const dateInstalledInput = createRef();
   const batteryBrandInput = createRef();
@@ -142,8 +138,6 @@ const RegistrationAddEdit = (props) => {
         );
       },
     });
-    const currentDate = date;
-    setDate(currentDate);
   }, [navigation, formState, submitHandler]);
 
   const inputChangeHandler = useCallback(
@@ -154,13 +148,17 @@ const RegistrationAddEdit = (props) => {
       // console.log(inputValidity)
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
-        value: inputValue, //value from child
-        isValid: inputValidity, //isValid from child
-        input: inputIdentifier, //inputId from child comp
+        value: inputValue, 
+        isValid: inputValidity,
+        input: inputIdentifier, 
       });
     },
     [dispatchFormState]
   );
+
+  useEffect(() => {
+    submitDateInput(date);
+  }, [])
 
   const submitHandler = useCallback(() => {
     if (formState.formIsValid == false) {
@@ -190,7 +188,7 @@ const RegistrationAddEdit = (props) => {
               </View>
               <DateTimePicker
                 testID="dateTimePicker"
-                value={date} // *** This might be problematic ***
+                value={date}
                 mode="date"
                 is24Hour={true}
                 display="default"
