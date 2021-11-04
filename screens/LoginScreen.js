@@ -12,10 +12,13 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Fonts from "../constants/Fonts";
+
+import * as authActions from "../store/actions/auth";
 
 const LoginScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");
@@ -23,10 +26,17 @@ const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState("");
 
+  const dispatch = useDispatch();
+
   const passwordInputRef = createRef();
 
   const handleFormSubmit = () => {
     console.log({ userEmail, userPassword });
+    // dispatch(authActions.signup(email, password));
+  };
+
+  const jumpToHome = () => {
+    navigation.push("afterLogin", { fromLogin: "hello from LoginScreen" });
   };
 
   return (
@@ -63,9 +73,12 @@ const LoginScreen = ({ navigation }) => {
                 autoCapitalize="none"
                 keyboardType="email-address"
                 returnKeyType="next"
-                onSubmitEditing={() =>
-                  passwordInputRef.current && passwordInputRef.current.focus()
-                }
+                onChangeText={(text) => {
+                  setUserEmail(text);
+                }}
+                onSubmitEditing={() => {
+                  passwordInputRef.current && passwordInputRef.current.focus();
+                }}
                 underlineColorAndroid="#f000"
                 blurOnSubmit={false}
               />
@@ -76,7 +89,10 @@ const LoginScreen = ({ navigation }) => {
                 placeholderTextColor="#8b9cb5"
                 keyboardType="default"
                 ref={passwordInputRef}
-                onSubmitEditing={Keyboard.dismiss}
+                // onSubmitEditing={Keyboard.dismiss}
+                onChangeText={(text) => {
+                  setUserPassword(text);
+                }}
                 blurOnSubmit={false}
                 secureTextEntry={true}
                 underlineColorAndroid="#f000"
@@ -85,9 +101,7 @@ const LoginScreen = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
-                onPress={() => {
-                  navigation.navigate("afterLogin", { fromLogin: 'hello from LoginScreen' });
-                }}
+                onPress={handleFormSubmit}
               >
                 <Text style={styles.buttonTextStyle}>LOGIN</Text>
               </TouchableOpacity>
@@ -126,14 +140,14 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: Colors.boxes,
     borderRadius: 15,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
   },
   buttonStyle: {
     backgroundColor: Colors.accentColor,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
@@ -152,7 +166,7 @@ const styles = StyleSheet.create({
     color: "white",
     paddingVertical: 10,
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
 });
 

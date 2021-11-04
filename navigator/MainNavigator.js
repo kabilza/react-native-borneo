@@ -27,7 +27,7 @@ const defaultScreenOptions = {
 };
 
 const registrationScreens = (props) => {
-  const {route} = props.route;
+  const { route } = props.route;
   return (
     <BatteryRegistrationStack.Navigator
       initialRouteName="RegistrationListScreen"
@@ -44,8 +44,7 @@ const registrationScreens = (props) => {
       <Stack.Screen
         name="RegistrationAddEdit"
         component={RegistrationAddEdit}
-        options={{
-        }}
+        options={{}}
       />
     </BatteryRegistrationStack.Navigator>
   );
@@ -58,6 +57,7 @@ const afterLogin = (props) => {
       initialRouteName="HomeScreen"
       screenOptions={{
         ...defaultScreenOptions,
+        gesturesEnabled: false,
       }}
     >
       <Stack.Screen
@@ -129,7 +129,7 @@ const MainNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="SplashScreen"
-      screenOptions={defaultScreenOptions}
+      screenOptions={{...defaultScreenOptions, gesturesEnabled: false}}
     >
       <Stack.Screen
         name="SplashScreen"
@@ -140,12 +140,15 @@ const MainNavigator = () => {
       <Stack.Screen
         name="AuthenticationScreen"
         component={AuthenticationScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name="afterLogin"
         component={afterLogin}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          gesturesEnabled: false
+        }}
       />
     </Stack.Navigator>
   );
