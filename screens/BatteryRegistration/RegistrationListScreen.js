@@ -12,6 +12,7 @@ import {
   ScrollView,
   FlatList,
   ActivityIndicator,
+  Button,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -25,6 +26,7 @@ import Colors from "../../constants/Colors";
 
 const RegistrationListScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
   const previouslyRegisteredBattery = useSelector(
@@ -33,13 +35,13 @@ const RegistrationListScreen = (props) => {
 
   const loadRegis = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    setIsRefreshing(true);
     try {
       await dispatch(batteryRegistrationAction.fetchRegistration());
     } catch (err) {
       setError(err.message);
     }
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   useLayoutEffect(() => {
@@ -75,7 +77,10 @@ const RegistrationListScreen = (props) => {
   }, [loadRegis]);
 
   useEffect(() => {
-    loadRegis();
+    setIsLoading(true);
+    loadRegis().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, loadRegis]);
 
   if (error) {
@@ -112,6 +117,8 @@ const RegistrationListScreen = (props) => {
     <View style={styles.container}>
       <TitleText>Registered Battery</TitleText>
       <FlatList
+        onRefresh={loadRegis}
+        refreshing={isRefreshing}
         data={previouslyRegisteredBattery}
         keyExtractor={(item, index) => item.id}
         renderItem={(itemData) => (

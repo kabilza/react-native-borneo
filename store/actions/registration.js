@@ -24,13 +24,13 @@ export const fetchRegistration = () => {
             resData[key].batteryBarcode,
             resData[key].batteryBrand,
             resData[key].batteryType,
+            resData[key].warrantyPeriod,
             resData[key].dateInstalled,
             resData[key].model,
-            resData[key].shopDistrict,
             resData[key].shopName,
-            resData[key].shopPhoneNumber,
             resData[key].shopProvince,
-            resData[key].warrantyPeriod,
+            resData[key].shopDistrict,
+            resData[key].shopPhoneNumber,
             key
           )
         );
