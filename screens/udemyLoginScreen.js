@@ -54,19 +54,19 @@ const formReducer = (state, action) => {
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [formValid, setFormIsValid] = useState(false);
-  const [errortext, setErrortext] = useState("");
+  const [errorText, setErrorText] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
 
   const dispatch = useDispatch();
 
   const initialFormState = {
     inputValues: {
-     userEmail: "",
-     userPassword: ""
+      userEmail: "",
+      userPassword: "",
     },
     inputValidities: {
       userEmail: false,
-      userPassword: false
+      userPassword: false,
     },
     formIsValid: false,
   };
@@ -83,7 +83,7 @@ const LoginScreen = ({ navigation }) => {
       // console.log("input from child " + inputIdentifier + " " + inputValue);
       // console.log('input validity ' + inputValidity)
       // console.log(formState);
-      
+
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue,
@@ -100,27 +100,34 @@ const LoginScreen = ({ navigation }) => {
     setIsSignUp((prevState) => !prevState);
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
+    let action;
     if (formState.formIsValid == false) {
       Alert.alert("Invalid input!", "Please check the errors in the form.", [
         { text: "Okay" },
       ]);
       return;
     }
-    if (formState.formIsValid) {
-      console.log("form is valid");
-      const userEmail = formState.inputValues.userEmail;
-      const userPassword = formState.inputValues.userPassword;
-      if (!isSignUp) {
-        console.log("login");
-        console.log({ userEmail, userPassword });
-        dispatch(authActions.login(userEmail, userPassword));
-      } else {
-        console.log("sign up");
-        console.log({ userEmail, userPassword });
-        dispatch(authActions.signup(userEmail, userPassword));
-      }
+    console.log("form is valid");
+    const userEmail = formState.inputValues.userEmail;
+    const userPassword = formState.inputValues.userPassword;
+    if (!isSignUp) {
+      console.log("login");
+      console.log({ userEmail, userPassword });
+      action = authActions.login(userEmail, userPassword);
+    } else {
+      console.log("sign up");
+      console.log({ userEmail, userPassword });
+      action = authActions.signup(userEmail, userPassword);
     }
+    setErrorText(null);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+    } catch (err) {
+      setErrorText(err.message);
+    }
+    setIsLoading(false);
   };
 
   const jumpToHome = () => {
@@ -148,7 +155,7 @@ const LoginScreen = ({ navigation }) => {
                 fontWeight: "bold",
                 color: "white",
                 marginTop: -5,
-                marginBottom: 30
+                marginBottom: 30,
               }}
             >
               {isSignUp ? "Sign Up" : "Login"}
@@ -159,6 +166,7 @@ const LoginScreen = ({ navigation }) => {
                 label="Enter E-mail"
                 errorText="Please enter a valid E-mail!"
                 keyboardType="email-address"
+                autoCapitalize="none"
                 returnKeyType="next"
                 autoCorrect={false}
                 onInputChange={inputChangeHandler}
@@ -174,6 +182,7 @@ const LoginScreen = ({ navigation }) => {
                 secureTextEntry={true}
                 keyboardType="default"
                 returnKeyType="done"
+                autoCapitalize="none"
                 ref={passwordInputRef}
                 onInputChange={inputChangeHandler}
                 onSubmitEditing={() => {}}
@@ -184,9 +193,17 @@ const LoginScreen = ({ navigation }) => {
                 activeOpacity={0.5}
                 onPress={handleFormSubmit}
               >
-                <Text style={styles.buttonTextStyle}>
-                  {isSignUp ? "Sign Up" : "Login"}
-                </Text>
+                {isLoading ? (
+                  <View
+                    style={{ marginTop: 10 }}
+                  >
+                    <ActivityIndicator size="small" color="black" />
+                  </View>
+                ) : (
+                  <Text style={styles.buttonTextStyle}>
+                    {isSignUp ? "Sign Up" : "Login"}
+                  </Text>
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonStyle}

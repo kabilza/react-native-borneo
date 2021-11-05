@@ -36,7 +36,6 @@ const LoginInputBox = forwardRef((props, ref) => {
   }, [inputState, onInputChange, id]);
 
   const textChangeHandler = text => {
-    console.log('textChangeHandler = ' + text);
     let isValid = true;
     if (text == ''){
         isValid = false;
