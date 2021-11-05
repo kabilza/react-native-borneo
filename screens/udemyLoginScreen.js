@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, createRef } from "react";
+import { useState, createRef, useReducer, useCallback } from "react";
 import {
   View,
   Text,
@@ -12,29 +12,87 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Fonts from "../constants/Fonts";
-
+import LoginInputBox from "../components/LoginInputBox";
 
 import * as authActions from "../store/actions/auth";
 
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    let newState = {};
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    newState = {
+      inputValues: updatedValues,
+      inputValidities: updatedValidities,
+      formIsValid: updatedFormIsValid,
+    };
+    console.log(newState);
+    return newState;
+  }
+  return state;
+};
+
 const LoginScreen = ({ navigation }) => {
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [formValid, setFormIsValid] = useState(false);
-  // const [formValidStatus, setFormValidStatus] = useState({
-  //   userName: false,
-  //   password: false,
-  // });
   const [errortext, setErrortext] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
 
   const dispatch = useDispatch();
+
+  const initialFormState = {
+    inputValues: {
+     userEmail: "",
+     userPassword: ""
+    },
+    inputValidities: {
+      userEmail: false,
+      userPassword: false
+    },
+    formIsValid: false,
+  };
+
+  const [formState, dispatchFormState] = useReducer(
+    formReducer,
+    initialFormState
+  );
+
+  const inputChangeHandler = useCallback(
+    // passing args from Input components
+    (inputIdentifier, inputValue, inputValidity) => {
+      // console.log(inputIdentifier)
+      // console.log("input from child " + inputIdentifier + " " + inputValue);
+      // console.log('input validity ' + inputValidity)
+      // console.log(formState);
+      
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier,
+      });
+    },
+    [dispatchFormState]
+  );
 
   const passwordInputRef = createRef();
 
@@ -42,25 +100,17 @@ const LoginScreen = ({ navigation }) => {
     setIsSignUp((prevState) => !prevState);
   };
 
-  const formChangeHandler = () => {
-    setFormIsValid(true);
-    if (userEmail === "") {
-      Alert.alert("Please enter Email!", "Email cannot be blank!", [
-        { text: "Okay" },
-      ]);
-      setFormIsValid(false);
-    }
-    if (userPassword === "") {
-      Alert.alert("Please enter Password!", "Password cannot be blank!", [
-        { text: "Okay" },
-      ]);
-      setFormIsValid(false);
-    }
-  };
-
   const handleFormSubmit = () => {
-    if (formValid) {
+    if (formState.formIsValid == false) {
+      Alert.alert("Invalid input!", "Please check the errors in the form.", [
+        { text: "Okay" },
+      ]);
+      return;
+    }
+    if (formState.formIsValid) {
       console.log("form is valid");
+      const userEmail = formState.inputValues.userEmail;
+      const userPassword = formState.inputValues.userPassword;
       if (!isSignUp) {
         console.log("login");
         console.log({ userEmail, userPassword });
@@ -70,11 +120,6 @@ const LoginScreen = ({ navigation }) => {
         console.log({ userEmail, userPassword });
         dispatch(authActions.signup(userEmail, userPassword));
       }
-    } else {
-      console.log("form is not valid!");
-      Alert.alert("Forms is not valid!", "Please make sure the form(s) are valid and is not empty!", [
-        { text: "Okay" },
-      ]);
     }
   };
 
@@ -103,41 +148,36 @@ const LoginScreen = ({ navigation }) => {
                 fontWeight: "bold",
                 color: "white",
                 marginTop: -5,
+                marginBottom: 30
               }}
             >
               {isSignUp ? "Sign Up" : "Login"}
             </Text>
             <View>
-              <TextInput
-                style={styles.textInputEmail}
-                onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                placeholder="Enter Email" //dummy@abc.com
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="none"
+              <LoginInputBox
+                id="userEmail"
+                label="Enter E-mail"
+                errorText="Please enter a valid E-mail!"
                 keyboardType="email-address"
                 returnKeyType="next"
+                autoCorrect={false}
+                onInputChange={inputChangeHandler}
                 onSubmitEditing={() => {
                   passwordInputRef.current && passwordInputRef.current.focus();
                 }}
-                underlineColorAndroid="#f000"
-                blurOnSubmit={false}
+                required
               />
-              <TextInput
-                style={styles.textInputEmail}
-                onChangeText={(UserPassword) => setUserPassword(UserPassword)}
-                placeholder="Enter Password" //12345
-                placeholderTextColor="#8b9cb5"
-                keyboardType="default"
-                ref={passwordInputRef}
-                // onSubmitEditing={Keyboard.dismiss}
-                onSubmitEditing={() => {
-                  formChangeHandler();
-                  Keyboard.dismiss();
-                }}
-                blurOnSubmit={false}
+              <LoginInputBox
+                id="userPassword"
+                label="Enter Password"
+                errorText="Please enter a valid password!"
                 secureTextEntry={true}
-                underlineColorAndroid="#f000"
+                keyboardType="default"
                 returnKeyType="done"
+                ref={passwordInputRef}
+                onInputChange={inputChangeHandler}
+                onSubmitEditing={() => {}}
+                required
               />
               <TouchableOpacity
                 style={styles.buttonStyle}
@@ -187,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     width: "80%",
-    height: 350,
+    height: 375,
     marginVertical: 30,
     padding: 30,
     backgroundColor: Colors.boxes,

@@ -13,8 +13,6 @@ const initialState = {
 const inputReducer = (state, action) => {
   switch (action.type) {
     case INPUT_CHANGE:
-        // console.log("prev state" + action.value);
-        // console.log("input is changing " + action.value);
       return { ...state, value: action.value, isValid: action.isValid };
     case INPUT_BLUR:
       return {
@@ -26,7 +24,7 @@ const inputReducer = (state, action) => {
   }
 };
 
-const InputBox = forwardRef((props, ref) => {
+const LoginInputBox = forwardRef((props, ref) => {
   const [inputState, dispatch] = useReducer(inputReducer, initialState);
 
   const { onInputChange, id } = props;
@@ -38,8 +36,9 @@ const InputBox = forwardRef((props, ref) => {
   }, [inputState, onInputChange, id]);
 
   const textChangeHandler = text => {
+    console.log('textChangeHandler = ' + text);
     let isValid = true;
-    if (text == ""){
+    if (text == ''){
         isValid = false;
     }
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
@@ -74,13 +73,16 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   label: {
-    marginVertical: 8,
+    marginVertical: 0,
   },
   input: {
-    paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: "#ccc",
-    borderBottomWidth: 1,
+    borderColor: "black",
+    borderWidth: 0.5,
+    borderRadius: 5,
+    backgroundColor: "white",
+    width: 300,
+    height: 30,
+    marginVertical: 10,
   },
   errorContainer: {
     marginVertical: 5,
@@ -91,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InputBox;
+export default LoginInputBox;
