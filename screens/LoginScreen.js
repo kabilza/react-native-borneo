@@ -11,6 +11,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
@@ -24,16 +25,71 @@ const LoginScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [formValid, setFormIsValid] = useState(false);
+  // const [formValidStatus, setFormValidStatus] = useState({
+  //   userName: false,
+  //   password: false,
+  // });
   const [errortext, setErrortext] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const dispatch = useDispatch();
 
   const passwordInputRef = createRef();
 
-  const handleFormSubmit = () => {
-    console.log({ userEmail, userPassword });
-    // dispatch(authActions.signup(email, password));
+  const formModeSwitch = () => {
+    setIsSignUp((prevState) => !prevState);
   };
+
+  const formChangeHandler = () => {
+    setFormIsValid(true);
+    if (userEmail === "") {
+      Alert.alert("Please enter Email!", "Email cannot be blank!", [
+        { text: "Okay" },
+      ]);
+      setFormIsValid(false);
+    }
+    if (userPassword === "") {
+      Alert.alert("Please enter Password!", "Password cannot be blank!", [
+        { text: "Okay" },
+      ]);
+      setFormIsValid(false);
+    }
+  };
+
+  const handleFormSubmit = () => {
+    if (formValid) {
+      console.log("form is valid");
+      if (!isSignUp) {
+        console.log("login");
+        console.log({ userEmail, userPassword });
+        dispatch(authActions.login(userEmail, userPassword));
+      } else {
+        console.log("sign up");
+        console.log({ userEmail, userPassword });
+        dispatch(authActions.signup(userEmail, userPassword));
+      }
+    } else {
+      console.log("form is not valid!");
+      Alert.alert("Forms is not valid!", "Please make sure the form(s) are valid and is not empty!", [
+        { text: "Okay" },
+      ]);
+    }
+  };
+
+  // const dispatchFormFunc = () => {
+  //   if (formValid) {
+  //     if (!isSignUp) {
+  //       console.log("sign in");
+  //       console.log({ userEmail, userPassword });
+  //       // dispatch(authActions.signup(userEmail, userPassword));
+  //     } else {
+  //       console.log("sign up");
+  //       console.log({ userEmail, userPassword });
+  //       // dispatch(authActions.signup(userEmail, userPassword));
+  //     }
+  //   }
+  // }
 
   const jumpToHome = () => {
     navigation.push("afterLogin", { fromLogin: "hello from LoginScreen" });
@@ -58,11 +114,11 @@ const LoginScreen = ({ navigation }) => {
                 fontFamily: Fonts.primaryFont,
                 fontSize: 25,
                 fontWeight: "bold",
-                marginBottom: 30,
                 color: "white",
+                marginTop: -5,
               }}
             >
-              Login
+              {isSignUp ? "Sign Up" : "Login"}
             </Text>
             <View>
               <TextInput
@@ -73,9 +129,6 @@ const LoginScreen = ({ navigation }) => {
                 autoCapitalize="none"
                 keyboardType="email-address"
                 returnKeyType="next"
-                onChangeText={(text) => {
-                  setUserEmail(text);
-                }}
                 onSubmitEditing={() => {
                   passwordInputRef.current && passwordInputRef.current.focus();
                 }}
@@ -90,8 +143,9 @@ const LoginScreen = ({ navigation }) => {
                 keyboardType="default"
                 ref={passwordInputRef}
                 // onSubmitEditing={Keyboard.dismiss}
-                onChangeText={(text) => {
-                  setUserPassword(text);
+                onSubmitEditing={() => {
+                  formChangeHandler();
+                  Keyboard.dismiss();
                 }}
                 blurOnSubmit={false}
                 secureTextEntry={true}
@@ -103,7 +157,18 @@ const LoginScreen = ({ navigation }) => {
                 activeOpacity={0.5}
                 onPress={handleFormSubmit}
               >
-                <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                <Text style={styles.buttonTextStyle}>
+                  {isSignUp ? "Sign Up" : "Login"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                activeOpacity={0.5}
+                onPress={formModeSwitch}
+              >
+                <Text style={styles.buttonTextStyle}>
+                  Switch to {isSignUp ? "Login" : "Sign Up"}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -135,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     width: "80%",
-    height: 250,
+    height: 350,
     marginVertical: 30,
     padding: 30,
     backgroundColor: Colors.boxes,
@@ -160,7 +225,6 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     marginTop: 20,
-    marginBottom: 25,
   },
   buttonTextStyle: {
     color: "white",
