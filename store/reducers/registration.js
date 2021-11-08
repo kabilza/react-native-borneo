@@ -72,8 +72,9 @@ export default (state = initialState, action) => {
       const shopProvince = action.battery.shopProvince;
       const warrantyPeriod = action.battery.warrantyPeriod;
       const receivedId = action.id;
+      const receivedUserId = action.userId;
       const newBattery = new BatteryRegistration(
-        "u5",
+        receivedUserId,
         batteryBarcode,
         batteryBrand,
         batteryType,

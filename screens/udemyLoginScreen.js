@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, createRef, useReducer, useCallback } from "react";
+import { useState, createRef, useReducer, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -56,6 +56,12 @@ const LoginScreen = ({ navigation }) => {
   const [formValid, setFormIsValid] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
+
+  useEffect(() => {
+    if(errorText){
+      Alert.alert('An error occurred!', errorText, [{text: 'Okay'}]);
+    }
+  }, [errorText])
 
   const dispatch = useDispatch();
 
@@ -124,15 +130,17 @@ const LoginScreen = ({ navigation }) => {
     setIsLoading(true);
     try {
       await dispatch(action);
+      navigation.push("afterLogin", { fromLogin: "hello from LoginScreen" });
     } catch (err) {
+      console.log(err.message);
       setErrorText(err.message);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
-  const jumpToHome = () => {
-    navigation.push("afterLogin", { fromLogin: "hello from LoginScreen" });
-  };
+  // const jumpToHome = () => {
+  //   navigation.push("afterLogin", { fromLogin: "hello from LoginScreen" });
+  // };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

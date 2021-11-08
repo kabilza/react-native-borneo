@@ -12,11 +12,13 @@ import SplashScreen from "./screens/SplashScreen";
 import HomeScreen from "./screens/HomeScreen";
 
 import registrationReducer from "./store/reducers/registration";
+import authReducer from "./store/reducers/auth";
 
 import MainNavigator from "./navigator/MainNavigator";
 
 const rootReducer = combineReducers({
   registration: registrationReducer,
+  auth: authReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

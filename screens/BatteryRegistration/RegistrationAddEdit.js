@@ -50,7 +50,6 @@ const formReducer = (state, action) => {
       inputValidities: updatedValidities,
       formIsValid: updatedFormIsValid,
     };
-    console.log(newState);
     return newState;
   }
   return state;
@@ -138,9 +137,6 @@ const RegistrationAddEdit = (props) => {
   const inputChangeHandler = useCallback(
     // passing args from Input components
     (inputIdentifier, inputValue, inputValidity) => {
-      // console.log(inputIdentifier)
-      console.log("input from child " + inputIdentifier + " " + inputValue);
-      // console.log(inputValidity)
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue,
