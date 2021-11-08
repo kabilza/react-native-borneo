@@ -17,12 +17,11 @@ export const fetchRegistration = () => {
 
       const resData = await response.json();
       const loadedRegistration = [];
-      console.log(resData);
 
       for (const key in resData) {
         loadedRegistration.push(
           new BatteryRegistration(
-            myUserId,
+            resData[key].userId,
             resData[key].batteryBarcode,
             resData[key].batteryBrand,
             resData[key].batteryType,
@@ -38,7 +37,7 @@ export const fetchRegistration = () => {
         );
       }
 
-      dispatch({ type: SET_REGIS, registration: loadedRegistration });
+      dispatch({ type: SET_REGIS, registration: loadedRegistration.filter(regis => {return regis.userId === myUserId})});
     } catch (err) {
       throw err;
     }

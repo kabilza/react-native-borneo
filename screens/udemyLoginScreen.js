@@ -45,7 +45,6 @@ const formReducer = (state, action) => {
       inputValidities: updatedValidities,
       formIsValid: updatedFormIsValid,
     };
-    console.log(newState);
     return newState;
   }
   return state;
@@ -85,10 +84,6 @@ const LoginScreen = ({ navigation }) => {
   const inputChangeHandler = useCallback(
     // passing args from Input components
     (inputIdentifier, inputValue, inputValidity) => {
-      // console.log(inputIdentifier)
-      // console.log("input from child " + inputIdentifier + " " + inputValue);
-      // console.log('input validity ' + inputValidity)
-      // console.log(formState);
 
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
