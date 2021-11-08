@@ -1,8 +1,15 @@
 import { NavigationContainer, Link } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerItem,
+  DrawerContentScrollView,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useLayoutEffect } from "react";
+import { View, Button } from "react-native";
+import { useDispatch } from "react-redux";
 
 import MyHeaderIcon from "../components/MyHeaderIcon";
 import HomeScreen from "../screens/HomeScreen";
@@ -15,9 +22,23 @@ import RegistrationListScreen from "../screens/BatteryRegistration/RegistrationL
 import RegistrationAddEdit from "../screens/BatteryRegistration/RegistrationAddEdit";
 import BatteryDetailScreen from "../screens/BatteryRegistration/BatteryDetailScreen";
 
+import * as authActions from "../store/actions/auth";
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const BatteryRegistrationStack = createNativeStackNavigator();
+
+const LogoutButton = (props) => {
+  const dispatch = useDispatch();
+  useLayoutEffect(() => {
+    dispatch(authActions.logout());
+    props.navigation.replace('AuthenticationScreen');
+  }, [props.navigation])
+
+  return (
+    <View></View>
+  );
+};
 
 const defaultScreenOptions = {
   headerStyle: {
@@ -121,6 +142,19 @@ const afterLogin = (props) => {
           ),
         }}
       />
+      <Stack.Screen
+        name="Logout"
+        component={LogoutButton}
+        options={{
+          drawerIcon: (drawerConfig) => (
+            <Ionicons
+              name="ios-exit-outline"
+              size={23}
+              color={drawerConfig.tintColor}
+            />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 };
@@ -129,7 +163,7 @@ const MainNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="SplashScreen"
-      screenOptions={{...defaultScreenOptions, gesturesEnabled: false}}
+      screenOptions={{ ...defaultScreenOptions, gesturesEnabled: false }}
     >
       <Stack.Screen
         name="SplashScreen"
@@ -147,7 +181,7 @@ const MainNavigator = () => {
         component={afterLogin}
         options={{
           headerShown: false,
-          gesturesEnabled: false
+          gesturesEnabled: false,
         }}
       />
     </Stack.Navigator>
