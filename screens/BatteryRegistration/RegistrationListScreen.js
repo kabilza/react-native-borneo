@@ -15,6 +15,7 @@ import {
   Button,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
 
 import Card from "../../components/Card";
 import BatteryItem from "../../components/BatteryItem";
@@ -107,7 +108,8 @@ const RegistrationListScreen = (props) => {
   if (!isLoading && previouslyRegisteredBattery.length === 0) {
     return (
       <View style={styles.centered}>
-        <Text>No previous registration found.</Text>
+        <Ionicons name='ios-search-sharp' size={100} style={{marginBottom: 20}}/>
+        <Text style={{ fontSize: 20, marginBottom: 10 }}>No previous registration found.</Text>
         <Text>Start adding some by tapping top right button!</Text>
       </View>
     );
