@@ -2,9 +2,6 @@ import { NavigationContainer, Link } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   createDrawerNavigator,
-  DrawerItem,
-  DrawerContentScrollView,
-  DrawerItemList,
 } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useLayoutEffect } from "react";
