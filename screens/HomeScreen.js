@@ -9,6 +9,7 @@ import {
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 import MyHeaderIcon from "../components/MyHeaderIcon";
 
@@ -20,6 +21,8 @@ import Card from "../components/Card";
 const dummyItem = ["hello"];
 
 const HomeScreen = (props) => {
+  const userState = useSelector(state => state.user.currentLoggedInUser);
+  console.log(userState);
   // console.log(props.route.params) //testing passing parameters across
   const { params } = props.route.params; //from login screen into homescreen
   // console.log(params) // now working!

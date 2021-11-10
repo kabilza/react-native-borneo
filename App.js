@@ -14,12 +14,14 @@ import HomeScreen from "./screens/HomeScreen";
 
 import registrationReducer from "./store/reducers/registration";
 import authReducer from "./store/reducers/auth";
+import userReducer from "./store/reducers/user"
 
 import MainNavigator from "./navigator/MainNavigator";
 
 const rootReducer = combineReducers({
   registration: registrationReducer,
-  auth: authReducer
+  auth: authReducer,
+  user: userReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

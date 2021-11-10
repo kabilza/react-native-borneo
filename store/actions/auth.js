@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // export const SIGNUP = "SIGNUP";
 // export const LOGIN = "LOGIN";
+
+import * as userModelActions from '../actions/user'
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
 
@@ -20,7 +22,10 @@ export const logout = () => {
 }
 
 export const authenticate = (userId, token) => {
-    return { type: AUTHENTICATE, userId: userId, token: token };
+  return dispatch => {
+    // dispatch create user
+    dispatch({ type: AUTHENTICATE, userId: userId, token: token });
+  }
 }
 
 export const signup = (email, password) => {
@@ -52,6 +57,7 @@ export const signup = (email, password) => {
 
     const resData = await response.json();
     console.log(resData);
+    dispatch(userModelActions.createNewUser(resData.localId));
     dispatch(authenticate(resData.localId, resData.idToken));
     const expirationDate = new Date(
       new Date().getTime() + parseInt(resData.expiresIn) * 1000
