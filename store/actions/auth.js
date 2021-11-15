@@ -5,23 +5,23 @@ export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
 
 const saveDataToStorage = (token, userId, expirationDate) => {
-    AsyncStorage.setItem(
-      "userData",
-      JSON.stringify({
-        token: token,
-        userId: userId,
-        expiryDate: expirationDate.toISOString(),
-      })
-    );
-  };
+  AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({
+      token: token,
+      userId: userId,
+      expiryDate: expirationDate.toISOString(),
+    })
+  );
+};
 
 export const logout = () => {
-    return { type: LOGOUT };
-}
+  return { type: LOGOUT };
+};
 
-export const authenticate = (userId, token) => {
-    return { type: AUTHENTICATE, userId: userId, token: token };
-}
+export const authenticate = (userId, token, displayName) => {
+  return { type: AUTHENTICATE, userId: userId, token: token, displayName: displayName };
+};
 
 export const signup = (email, password) => {
   return async (dispatch) => {
@@ -52,7 +52,7 @@ export const signup = (email, password) => {
 
     const resData = await response.json();
     console.log(resData);
-    dispatch(authenticate(resData.localId, resData.idToken));
+    dispatch(authenticate(resData.localId, resData.idToken, resData.displayName));
     const expirationDate = new Date(
       new Date().getTime() + parseInt(resData.expiresIn) * 1000
     );
@@ -91,7 +91,7 @@ export const login = (email, password) => {
 
     const resData = await response.json();
     console.log(resData);
-    dispatch(authenticate(resData.localId, resData.idToken));
+    dispatch(authenticate(resData.localId, resData.idToken, resData.displayName));
     const expirationDate = new Date(
       new Date().getTime() + parseInt(resData.expiresIn) * 1000
     );
@@ -99,3 +99,27 @@ export const login = (email, password) => {
   };
 };
 
+export const updateProfile = (userDisplayName, userTokenId) => {
+  return async (dispatch) => {
+    const response = await fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDGsIoV4XajZlYThhBxX6oPsKtyqn8Wr3c",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idToken: userTokenId,
+          displayName: userDisplayName,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Error!')
+    }
+
+    const resData = await response.json();
+    console.log(resData);
+  };
+};

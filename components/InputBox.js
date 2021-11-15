@@ -13,8 +13,8 @@ const initialState = {
 const inputReducer = (state, action) => {
   switch (action.type) {
     case INPUT_CHANGE:
-        // console.log("prev state" + action.value);
-        // console.log("input is changing " + action.value);
+      // console.log("prev state" + action.value);
+      // console.log("input is changing " + action.value);
       return { ...state, value: action.value, isValid: action.isValid };
     case INPUT_BLUR:
       return {
@@ -37,10 +37,10 @@ const InputBox = forwardRef((props, ref) => {
     }
   }, [inputState, onInputChange, id]);
 
-  const textChangeHandler = text => {
+  const textChangeHandler = (text) => {
     let isValid = true;
-    if (text == ""){
-        isValid = false;
+    if (text == "") {
+      isValid = false;
     }
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };

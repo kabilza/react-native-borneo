@@ -52,7 +52,7 @@ const formReducer = (state, action) => {
 
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [formValid, setFormIsValid] = useState(false);
+
   const [errorText, setErrorText] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
 

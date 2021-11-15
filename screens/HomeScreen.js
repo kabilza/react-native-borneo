@@ -9,6 +9,7 @@ import {
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 import MyHeaderIcon from "../components/MyHeaderIcon";
 
@@ -23,6 +24,9 @@ const HomeScreen = (props) => {
   // console.log(props.route.params) //testing passing parameters across
   const { params } = props.route.params; //from login screen into homescreen
   // console.log(params) // now working!
+
+  const displayName = useSelector((state) => state.auth.displayName);
+  console.log(displayName);
   useLayoutEffect(() => {
     props.navigation.setOptions({
       headerTitle: "Home",
@@ -32,7 +36,9 @@ const HomeScreen = (props) => {
           style={{ marginLeft: -40 }}
           onPress={() => {
             console.log("pressed");
-            props.navigation.navigate('LinkToRegistrationStack', {fromHome: true})
+            props.navigation.navigate("LinkToRegistrationStack", {
+              fromHome: true,
+            });
           }}
         />
       ),
@@ -47,7 +53,11 @@ const HomeScreen = (props) => {
           source={require("../assets/images/defaultUserIcon.png")}
           resizeMode="contain"
         />
-        <Text style={styles.titleFont}>Welcome, user!</Text>
+        {displayName ? (
+          <Text style={styles.titleFont}>Welcome, {displayName}!</Text>
+        ) : (
+          <Text style={styles.titleFont}>Welcome, user!</Text>
+        )}
       </View>
       {/* <ScrollView contentContainerStyle={styles.listContainer}>
         <TouchableOpacity>
@@ -100,7 +110,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 150,
     justifyContent: "center",
-    backgroundColor: '#888'
+    backgroundColor: "#888",
   },
 });
 
