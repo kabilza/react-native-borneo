@@ -54,7 +54,7 @@ const InputBox = forwardRef((props, ref) => {
       <Text style={styles.label}>{props.label}</Text>
       <TextInput
         {...props}
-        style={styles.input}
+        style={props.altStyle ? styles.input2 : styles.input}
         value={inputState.value}
         onChangeText={textChangeHandler}
         onBlur={lostFocusHandler}
@@ -81,6 +81,14 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
+  },
+  input2: {
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderColor: "#ccc",
+    borderWidth: 2,
+    borderRadius: 4,
+    backgroundColor: 'white'
   },
   errorContainer: {
     marginVertical: 5,

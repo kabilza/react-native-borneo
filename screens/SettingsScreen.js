@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  Alert
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -25,7 +25,7 @@ import Fonts from "../constants/Fonts";
 import DummyItem from "../components/DummyItem";
 import Card from "../components/Card";
 
-import * as authActions from "../store/actions/auth"
+import * as authActions from "../store/actions/auth";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -61,9 +61,7 @@ const SettingsScreen = ({ navigation, route }) => {
 
   const dispatch = useDispatch();
 
-  const userTokenId = useSelector(
-    (state) => state.auth.token
-  );
+  const userTokenId = useSelector((state) => state.auth.token);
 
   const initialFormState = {
     inputValues: {
@@ -103,7 +101,11 @@ const SettingsScreen = ({ navigation, route }) => {
     action = authActions.updateProfile(userDisplayName, userTokenId);
     try {
       await dispatch(action);
-      Alert.alert('Done!', 'Display Name changed successfully! Re-login to see changes!', [{text: 'Okay'}]);
+      Alert.alert(
+        "Done!",
+        "Display Name changed successfully! Re-login to see changes!",
+        [{ text: "Okay" }]
+      );
       // navigation.push("afterLogin", { fromLogin: "hello from LoginScreen" });
     } catch (err) {
       console.log(err.message);
@@ -132,6 +134,7 @@ const SettingsScreen = ({ navigation, route }) => {
       <Text style={styles.titleFont}>Enter your display name...</Text>
       <View style={styles.formContainer}>
         <InputBox
+          altStyle={true}
           id="userDisplayName"
           label="Display First and Last Name"
           errorText="Please enter a valid name!"
