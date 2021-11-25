@@ -26,7 +26,7 @@ export const authenticate = (userId, token, displayName) => {
 export const signup = (email, password) => {
   return async (dispatch) => {
     const response = await fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDGsIoV4XajZlYThhBxX6oPsKtyqn8Wr3c",
+      "http://localhost:3001/user/signup",
       {
         method: "POST",
         headers: {
@@ -35,26 +35,26 @@ export const signup = (email, password) => {
         body: JSON.stringify({
           email: email,
           password: password,
-          returnSecureToken: true,
         }),
       }
     );
 
     if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
+      // const errorResData = await response.json();
+      // const errorId = errorResData.error.message;
       let message = "Something went wrong!";
-      if (errorId === "EMAIL_EXISTS") {
-        message = "This email exists already!";
-      }
+      // if (errorId === "EMAIL_EXISTS") {
+      //   message = "This email exists already!";
+      // }
       throw new Error(message);
+      console.log('error!')
     }
 
     const resData = await response.json();
     console.log(resData);
     dispatch(authenticate(resData.localId, resData.idToken, resData.displayName));
     const expirationDate = new Date(
-      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+      new Date().getTime() + parseInt('3600') * 1000
     );
     saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
@@ -63,7 +63,7 @@ export const signup = (email, password) => {
 export const login = (email, password) => {
   return async (dispatch) => {
     const response = await fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDGsIoV4XajZlYThhBxX6oPsKtyqn8Wr3c",
+      "http://localhost:3001/user/signin",
       {
         method: "POST",
         headers: {
@@ -72,20 +72,14 @@ export const login = (email, password) => {
         body: JSON.stringify({
           email: email,
           password: password,
-          returnSecureToken: true,
         }),
       }
     );
 
     if (!response.ok) {
+      console.log('error!')
       const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = "Something went wrong!";
-      if (errorId === "EMAIL_NOT_FOUND") {
-        message = "This email could not be found!";
-      } else if (errorId === "INVALID_PASSWORD") {
-        message = "This password is not valid!";
-      }
+      let message = errorResData.message;
       throw new Error(message);
     }
 
@@ -93,7 +87,7 @@ export const login = (email, password) => {
     console.log(resData);
     dispatch(authenticate(resData.localId, resData.idToken, resData.displayName));
     const expirationDate = new Date(
-      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+      new Date().getTime() + parseInt('3600') * 1000
     );
     saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
@@ -102,7 +96,7 @@ export const login = (email, password) => {
 export const updateProfile = (userDisplayName, userTokenId) => {
   return async (dispatch) => {
     const response = await fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDGsIoV4XajZlYThhBxX6oPsKtyqn8Wr3c",
+      "http://localhost:3001/user/profile/change-name",
       {
         method: "POST",
         headers: {

@@ -8,7 +8,7 @@ export const fetchRegistration = () => {
     try {
       const myUserId = getState().auth.userId;
       const response = await fetch(
-        `https://rn-battery-app-default-rtdb.asia-southeast1.firebasedatabase.app/batteryregistration.json`
+        `http://localhost:3001/battery/fetchBattery?userId=${myUserId}`
       );
 
       if (!response.ok) {
@@ -16,15 +16,16 @@ export const fetchRegistration = () => {
       }
 
       const resData = await response.json();
+      console.log(resData);
       const loadedRegistration = [];
 
       for (const key in resData) {
         loadedRegistration.push(
           new BatteryRegistration(
             resData[key].userId,
-            resData[key].batteryBarcode,
-            resData[key].batteryBrand,
-            resData[key].batteryType,
+            resData[key].barcode,
+            resData[key].brand,
+            resData[key].type,
             resData[key].warrantyPeriod,
             resData[key].dateInstalled,
             resData[key].model,
@@ -32,10 +33,12 @@ export const fetchRegistration = () => {
             resData[key].shopProvince,
             resData[key].shopDistrict,
             resData[key].shopPhoneNumber,
-            key
+            resData[key]._id
           )
         );
       }
+
+      console.log(loadedRegistration);
 
       dispatch({ type: SET_REGIS, registration: loadedRegistration.filter(regis => {return regis.userId === myUserId})});
     } catch (err) {
@@ -51,7 +54,7 @@ export const addNewBattery = (battery) => {
     const newInputValues = {userId: myUserId, ...battery.inputValues};
 
     const response = await fetch(
-      `https://rn-battery-app-default-rtdb.asia-southeast1.firebasedatabase.app/batteryregistration.json?auth=${myToken}`,
+      `http://localhost:3001/battery/addNewBattery?auth=${myToken}`,
       {
         method: "POST",
         headers: {

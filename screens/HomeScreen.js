@@ -26,7 +26,7 @@ const HomeScreen = (props) => {
   // console.log(params) // now working!
 
   const displayName = useSelector((state) => state.auth.displayName);
-  console.log(displayName);
+  // console.log(displayName);
   useLayoutEffect(() => {
     props.navigation.setOptions({
       headerTitle: "Home",
