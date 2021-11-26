@@ -62,15 +62,31 @@ const SettingsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const userTokenId = useSelector((state) => state.auth.token);
+  const userInitialValues = useSelector((state) => state.auth);
 
   const initialFormState = {
+    //update here
     inputValues: {
-      userDisplayName: "",
+      userDisplayName: userInitialValues.displayName
+        ? userInitialValues.displayName
+        : "",
+      userBriefInfo: "",
+      userPhoneNumber: "",
+      userFacebook: "",
+      userTwitter: "",
+      userHomeAddress: "",
+      userAge: "",
     },
     inputValidities: {
-      userDisplayName: false,
+      userDisplayName: true,
+      userBriefInfo: true,
+      userPhoneNumber: true,
+      userFacebook: true,
+      userTwitter: true,
+      userHomeAddress: true,
+      userAge: true,
     },
-    formIsValid: false,
+    formIsValid: true,
   };
 
   const [formState, dispatchFormState] = useReducer(
@@ -127,23 +143,99 @@ const SettingsScreen = ({ navigation, route }) => {
       //   />
       // ),
     });
+    console.log(formState.inputValues);
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleFont}>Enter your display name...</Text>
+      <Text style={styles.titleFont}>Edit your personal profile</Text>
       <View style={styles.formContainer}>
-        <InputBox
-          altStyle={true}
-          id="userDisplayName"
-          label="Display First and Last Name"
-          errorText="Please enter a valid name!"
-          keyboardType="default"
-          returnKeyType="done"
-          autoCapitalize="words"
-          onInputChange={inputChangeHandler}
-          onSubmitEditing={() => {}}
-        />
+        <ScrollView style={styles.formContainerInside}>
+          <InputBox
+            altStyle={true}
+            id="userDisplayName"
+            label="Display First and Last Name"
+            errorText="Please enter a valid name!"
+            keyboardType="default"
+            returnKeyType="done"
+            autoCapitalize="words"
+            onInputChange={inputChangeHandler}
+            onSubmitEditing={() => {}}
+            placeholder={formState.inputValues.userDisplayName}
+          />
+          <InputBox
+            altStyle={true}
+            id="userBriefInfo"
+            label="Brief Info"
+            errorText="Please enter a valid brief info!"
+            keyboardType="default"
+            returnKeyType="done"
+            autoCapitalize="words"
+            onInputChange={inputChangeHandler}
+            onSubmitEditing={() => {}}
+            placeholder={formState.inputValues.userBriefInfo}
+          />
+          <InputBox
+            altStyle={true}
+            id="userPhoneNumber"
+            label="Phone Number"
+            errorText="Please enter a valid phone number!"
+            keyboardType="default"
+            returnKeyType="done"
+            autoCapitalize="words"
+            onInputChange={inputChangeHandler}
+            onSubmitEditing={() => {}}
+            placeholder={formState.inputValues.userPhoneNumber}
+          />
+          <InputBox
+            altStyle={true}
+            id="userFacebook"
+            label="Facebook"
+            errorText="Please enter a valid FB!"
+            keyboardType="default"
+            returnKeyType="done"
+            autoCapitalize="words"
+            onInputChange={inputChangeHandler}
+            onSubmitEditing={() => {}}
+            placeholder={formState.inputValues.userFacebook}
+          />
+          <InputBox
+            altStyle={true}
+            id="userTwitter"
+            label="Twitter"
+            errorText="Please enter a valid twitter id!"
+            keyboardType="default"
+            returnKeyType="done"
+            autoCapitalize="words"
+            onInputChange={inputChangeHandler}
+            onSubmitEditing={() => {}}
+            placeholder={formState.inputValues.userTwitter}
+          />
+          <InputBox
+            altStyle={true}
+            id="userHomeAddress"
+            label="Home Address"
+            errorText="Please enter a valid home address!"
+            keyboardType="default"
+            returnKeyType="done"
+            autoCapitalize="words"
+            onInputChange={inputChangeHandler}
+            onSubmitEditing={() => {}}
+            placeholder={formState.inputValues.userHomeAddress}
+          />
+          <InputBox
+            altStyle={true}
+            id="userAge"
+            label="Age"
+            errorText="Please enter age!"
+            keyboardType="default"
+            returnKeyType="done"
+            autoCapitalize="words"
+            onInputChange={inputChangeHandler}
+            onSubmitEditing={() => {}}
+            placeholder={formState.inputValues.userAge}
+          />
+        </ScrollView>
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
@@ -168,15 +260,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     width: "80%",
-    height: 375,
+    height: 600,
     marginVertical: 30,
-    padding: 30,
-    backgroundColor: Colors.boxes,
+    padding: 10,
+    backgroundColor: '#C0C0C0',
     borderRadius: 15,
     shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
+  },
+  formContainerInside: {
+    width: "90%",
   },
   titleFont: {
     fontFamily: Fonts.primaryFont,
@@ -208,11 +303,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 30,
     padding: 10,
+    marginTop: 10,
   },
   buttonTextStyle: {
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

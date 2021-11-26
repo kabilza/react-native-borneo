@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 2,
     borderRadius: 4,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginBottom: 15
   },
   errorContainer: {
     marginVertical: 5,
