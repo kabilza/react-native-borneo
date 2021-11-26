@@ -112,11 +112,12 @@ const SettingsScreen = ({ navigation, route }) => {
   const handleFormSubmit = async () => {
     // console.log(userTokenId);
     let action;
-    const userDisplayName = formState.inputValues.userDisplayName;
+    // const userDisplayName = formState.inputValues.userDisplayName;
+    const newProfile = formState.inputValues;
     setErrorText(null);
     setIsLoading(true);
-    console.log(userDisplayName);
-    action = authActions.updateProfile(userDisplayName, userTokenId);
+    console.log('newProfile ' + newProfile);
+    action = authActions.updateProfile(newProfile, userTokenId);
     try {
       await dispatch(action);
       Alert.alert(

@@ -136,6 +136,7 @@ const RegistrationListScreen = (props) => {
             shopDistrict={itemData.item.shopDistrict}
             shopPhoneNumber={itemData.item.shopPhoneNumber}
             batteryId={itemData.item.id}
+            key={itemData.item.id}
             onSelect={() => {
               props.navigation.navigate("BatteryDetailScreen", {
                 itemId: itemData.item.id,

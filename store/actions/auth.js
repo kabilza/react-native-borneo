@@ -171,7 +171,7 @@ export const login = (email, password) => {
   };
 };
 
-export const updateProfile = (userDisplayName, userTokenId) => {
+export const updateProfile = (newProfile, userTokenId) => {
   return async (dispatch, getState) => {
     const myUserId = getState().auth.userId;
     console.log(myUserId);
@@ -185,7 +185,7 @@ export const updateProfile = (userDisplayName, userTokenId) => {
         },
         body: JSON.stringify({
           userId: myUserId,
-          displayName: userDisplayName,
+          newProfile: newProfile,
         }),
       }
     );
