@@ -26,7 +26,7 @@ const SplashScreen = ({ navigation }) => {
       }
 
       const transformedData = JSON.parse(userData);
-      const { token, userId, expiryDate } = transformedData;
+      const { token, userId, expiryDate, displayName } = transformedData;
       const expirationDate = new Date(expiryDate);
 
       if (expirationDate <= new Date() || !token || !userId) {
@@ -36,7 +36,7 @@ const SplashScreen = ({ navigation }) => {
       }
 
       navigation.replace('afterLogin');
-      dispatch(authActions.authenticate(userId, token));
+      dispatch(authActions.authenticate(userId, token, displayName));
     };
     tryLogin();
   }, [dispatch]);

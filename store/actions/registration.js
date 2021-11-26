@@ -83,12 +83,12 @@ export const removeBattery = (batteryId) => {
   return async (dispatch, getState) => {
     const myToken = getState().auth.token;
     await fetch(
-      `https://rn-battery-app-default-rtdb.asia-southeast1.firebasedatabase.app/batteryregistration/${batteryId}.json?auth=${myToken}`,
+      `http://localhost:3001/battery/removeBattery?batteryId=${batteryId}&auth=${myToken}`,
       { method: "DELETE" }
     );
-    dispatch({
-      type: REMOVE_BATTERY,
-      batteryId: batteryId,
-    });
+    // dispatch({
+    //   type: REMOVE_BATTERY,
+    //   batteryId: batteryId,
+    // });
   };
 };

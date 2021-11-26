@@ -4,13 +4,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
 
-const saveDataToStorage = (token, userId, expirationDate) => {
+const saveDataToStorage = (token, userId, expirationDate, displayName) => {
   AsyncStorage.setItem(
     "userData",
     JSON.stringify({
       token: token,
       userId: userId,
       expiryDate: expirationDate.toISOString(),
+      displayName: displayName
     })
   );
 };
@@ -56,7 +57,7 @@ export const signup = (email, password) => {
     const expirationDate = new Date(
       new Date().getTime() + parseInt('3600') * 1000
     );
-    saveDataToStorage(resData.idToken, resData.localId, expirationDate);
+    saveDataToStorage(resData.idToken, resData.localId, expirationDate, resData.displayName);
   };
 };
 
@@ -89,21 +90,24 @@ export const login = (email, password) => {
     const expirationDate = new Date(
       new Date().getTime() + parseInt('3600') * 1000
     );
-    saveDataToStorage(resData.idToken, resData.localId, expirationDate);
+    saveDataToStorage(resData.idToken, resData.localId, expirationDate, resData.displayName);
   };
 };
 
 export const updateProfile = (userDisplayName, userTokenId) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const myUserId = getState().auth.userId;
+    console.log(myUserId);
+    // const myToken = getState().auth.token;
     const response = await fetch(
-      "http://localhost:3001/user/profile/change-name",
+      `http://localhost:3001/user/profile/changeProfile?auth=${userTokenId}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          idToken: userTokenId,
+          userId: myUserId,
           displayName: userDisplayName,
         }),
       }

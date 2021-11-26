@@ -92,7 +92,7 @@ const SettingsScreen = ({ navigation, route }) => {
   );
 
   const handleFormSubmit = async () => {
-    console.log(userTokenId);
+    // console.log(userTokenId);
     let action;
     const userDisplayName = formState.inputValues.userDisplayName;
     setErrorText(null);
