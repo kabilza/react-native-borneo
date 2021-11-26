@@ -62,6 +62,8 @@ const SettingsScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const userTokenId = useSelector((state) => state.auth.token);
+  const authUserProfile = useSelector((state) => state.auth.userProfile);
+  console.log(authUserProfile);
   const userInitialValues = useSelector((state) => state.auth);
 
   const initialFormState = {
@@ -70,12 +72,12 @@ const SettingsScreen = ({ navigation, route }) => {
       userDisplayName: userInitialValues.displayName
         ? userInitialValues.displayName
         : "",
-      userBriefInfo: "",
-      userPhoneNumber: "",
-      userFacebook: "",
-      userTwitter: "",
-      userHomeAddress: "",
-      userAge: "",
+      userBriefInfo: authUserProfile.briefInfo ? authUserProfile.briefInfo : "",
+      userPhoneNumber: authUserProfile.phoneNumber ? authUserProfile.phoneNumber : "",
+      userFacebook: authUserProfile.facebook ? authUserProfile.facebook : "",
+      userTwitter: authUserProfile.twitter ? authUserProfile.twitter : "",
+      userHomeAddress: authUserProfile.homeAddress ? authUserProfile.homeAddress : "",
+      userAge: authUserProfile.age ? authUserProfile.age : "",
     },
     inputValidities: {
       userDisplayName: true,

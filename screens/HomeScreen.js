@@ -24,7 +24,8 @@ const HomeScreen = (props) => {
   // console.log(props.route.params) //testing passing parameters across
   const { params } = props.route.params; //from login screen into homescreen
   // console.log(params) // now working!
-
+  // const authUserProfile = useSelector((state) => state.auth.userProfile);
+  // console.log(authUserProfile);
   const displayName = useSelector((state) => state.auth.displayName);
   // console.log(displayName);
   useLayoutEffect(() => {

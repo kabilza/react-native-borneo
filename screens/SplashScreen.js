@@ -4,7 +4,7 @@ import { ActivityIndicator, View, StyleSheet, Image, Text } from "react-native";
 import { useDispatch } from "react-redux";
 
 import Fonts from "../constants/Fonts";
-import * as authActions from "../store/actions/auth"
+import * as authActions from "../store/actions/auth";
 
 const SplashScreen = ({ navigation }) => {
   const [animating, setAnimating] = useState(true);
@@ -20,23 +20,47 @@ const SplashScreen = ({ navigation }) => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
       if (!userData) {
-        console.log('cannot find user data')
+        console.log("cannot find user data");
         navigation.replace("AuthenticationScreen");
         return;
       }
 
       const transformedData = JSON.parse(userData);
-      const { token, userId, expiryDate, displayName } = transformedData;
+      const {
+        token,
+        userId,
+        expiryDate,
+        displayName,
+        briefInfo,
+        phoneNumber,
+        facebook,
+        twitter,
+        homeAddress,
+        age,
+        profileImage,
+      } = transformedData;
       const expirationDate = new Date(expiryDate);
 
+      const userProfile = {
+        briefInfo: briefInfo,
+        phoneNumber: phoneNumber,
+        facebook: facebook,
+        twitter: twitter,
+        homeAddress: homeAddress,
+        age: age,
+        profileImage: profileImage,
+      };
+
       if (expirationDate <= new Date() || !token || !userId) {
-        console.log('token expired')
+        console.log("token expired");
         navigation.replace("AuthenticationScreen");
         return;
       }
 
-      navigation.replace('afterLogin');
-      dispatch(authActions.authenticate(userId, token, displayName));
+      navigation.replace("afterLogin");
+      dispatch(
+        authActions.authenticate(userId, token, displayName, userProfile)
+      );
     };
     tryLogin();
   }, [dispatch]);
