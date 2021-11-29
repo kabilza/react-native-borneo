@@ -10,13 +10,7 @@ const SplashScreen = ({ navigation }) => {
   const [animating, setAnimating] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
-    // setTimeout(() => {
-    //   setAnimating(false);
-    //   //Check if user_id is set or not
-    //   //If not then send for Authentication
-    //   //else send to Home Screen
-    //   navigation.replace('AuthenticationScreen');
-    // }, 3000);
+
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
       if (!userData) {

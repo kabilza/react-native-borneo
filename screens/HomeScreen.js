@@ -54,12 +54,12 @@ const HomeScreen = (props) => {
           style={styles.headerBackgroundImage}
           blurRadius={20}
           // source={{ uri: avatarBackground }}
-          source={require("../assets/images/defaultUserIcon.png")}
+          source={require("../assets/images/defaultProfile.jpeg")}
         >
           <View style={styles.userImageContainer}>
             <Image
               style={styles.userImage}
-              source={require("../assets/images/defaultUserIcon.png")}
+              source={require("../assets/images/defaultProfile.jpeg")}
               resizeMode="contain"
             />
             {displayName ? (
@@ -166,14 +166,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginTop: 10,
-    color: "#A5A5A5",
+    color: "white",
   },
   titleFont2: {
     fontFamily: Fonts.primaryFont,
     fontSize: 15,
     fontWeight: "bold",
     marginLeft: 20,
-    color: "#A5A5A5",
+    color: "white",
   },
   listContainer: {
     width: "100%",
