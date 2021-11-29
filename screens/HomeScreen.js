@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
@@ -24,7 +25,7 @@ const HomeScreen = (props) => {
   // console.log(props.route.params) //testing passing parameters across
   const { params } = props.route.params; //from login screen into homescreen
   // console.log(params) // now working!
-  // const authUserProfile = useSelector((state) => state.auth.userProfile);
+  const authUserProfile = useSelector((state) => state.auth.userProfile);
   // console.log(authUserProfile);
   const displayName = useSelector((state) => state.auth.displayName);
   // console.log(displayName);
@@ -69,27 +70,47 @@ const HomeScreen = (props) => {
           </View>
           <View style={styles.userLocationSection}>
             <Ionicons name="ios-flag" size={24} color="white" />
-            <Text style={styles.titleFont2}>User location!</Text>
+            <Text style={styles.titleFont2}>{authUserProfile.homeAddress}</Text>
           </View>
         </ImageBackground>
       </View>
 
-      <ScrollView
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-      >
-        <UserInformation
-          title="Brief Info"
-          data="Some Info"
-          iconName="ios-people"
-        ></UserInformation>
-        <UserInformation
-          title="Brief Info"
-          data="Some Info"
-          iconName="ios-people"
-        ></UserInformation>
-      </ScrollView>
+      <SafeAreaView style={{flex: 1, height: 10}}>
+        <ScrollView
+          contentContainerStyle={styles.listContainer}
+        >
+          <UserInformation
+            title="Brief Info"
+            data={authUserProfile.briefInfo}
+            iconName="ios-information-circle"
+          ></UserInformation>
+          <UserInformation
+            title="Phone Number"
+            data={authUserProfile.phoneNumber}
+            iconName="ios-call"
+          ></UserInformation>
+          <UserInformation
+            title="Facebook"
+            data={authUserProfile.facebook}
+            iconName="ios-logo-facebook"
+          ></UserInformation>
+          <UserInformation
+            title="Twitter"
+            data={authUserProfile.twitter}
+            iconName="ios-logo-twitter"
+          ></UserInformation>
+          <UserInformation
+            title="Home Address"
+            data={authUserProfile.homeAddress}
+            iconName="ios-home"
+          ></UserInformation>
+          <UserInformation
+            title="Age"
+            data={authUserProfile.age}
+            iconName="ios-people"
+          ></UserInformation>
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };
@@ -111,7 +132,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   infoContainer: {
-    flex: 1,
+    flex: 3,
     alignItems: "center",
     backgroundColor: "white",
     padding: 15,
@@ -124,6 +145,7 @@ const styles = StyleSheet.create({
     marginRight: 0,
     borderBottomColor: "#A5A5A5",
     borderBottomWidth: 1,
+    
   },
   headerBackgroundImage: {
     paddingBottom: 20,
@@ -148,16 +170,15 @@ const styles = StyleSheet.create({
   },
   titleFont2: {
     fontFamily: Fonts.primaryFont,
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "bold",
     marginLeft: 20,
     color: "#A5A5A5",
   },
   listContainer: {
-    width:"90%",
-    height: 30,
-    // paddingVertical: 20,
-    flex: 1,
+    width: "100%",
+    height: 500,
+    paddingHorizontal: 20,
   },
   homeCard: {
     alignItems: "center",

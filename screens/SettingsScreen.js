@@ -264,7 +264,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     width: "80%",
     height: 600,
-    marginVertical: 30,
+    marginBottom: 30,
+    marginTop: 10,
     padding: 10,
     backgroundColor: '#C0C0C0',
     borderRadius: 15,
@@ -280,6 +281,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.primaryFont,
     fontSize: 25,
     fontWeight: "bold",
+    marginTop: 30
   },
   listContainer: {
     width: "100%",
