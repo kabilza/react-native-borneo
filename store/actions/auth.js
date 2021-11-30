@@ -30,7 +30,7 @@ const saveDataToStorage = (
       twitter: twitter,
       homeAddress: homeAddress,
       age: age,
-      profileImage: profileImage
+      profileImage: profileImage,
     })
   );
 };
@@ -82,7 +82,7 @@ export const signup = (email, password) => {
       twitter: resData.twitter,
       homeAddress: resData.homeAddress,
       age: resData.age,
-      profileImage: resData.profileImage
+      profileImage: resData.profileImage,
     };
     // console.log(userProfile);
     dispatch(
@@ -141,7 +141,7 @@ export const login = (email, password) => {
       twitter: resData.twitter,
       homeAddress: resData.homeAddress,
       age: resData.age,
-      profileImage: resData.profileImage
+      profileImage: resData.profileImage,
     };
     // console.log(userProfile);
     dispatch(
@@ -196,5 +196,50 @@ export const updateProfile = (newProfile, userTokenId) => {
 
     const resData = await response.json();
     console.log(resData);
+  };
+};
+
+export const updateProfilePicture = (newProfileUri, userTokenId) => {
+  return async (dispatch, getState) => {
+    const myUserId = getState().auth.userId;
+    // console.log(myUserId);
+    // const myToken = getState().auth.token;
+    const newFilename =
+      new Date().toISOString() + "-" + newProfileUri.split("/").pop();
+    let formData = new FormData();
+    formData.append("photoData", {
+      uri: newProfileUri,
+      name: newFilename,
+      type: "image",
+    });
+    const response = await fetch(
+      `http://localhost:3001/user/profile/changeProfilePicture?auth=${userTokenId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        // body: JSON.stringify({
+        //   userId: myUserId,
+        //   photoData: {
+        //     uri: newProfileUri,
+        //     name: newFilename,
+        //     type: "image",
+        //   },
+        // }),
+        body: {
+          "hello": "hello"
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Error!");
+    }
+
+    const resData = await response.json();
+    console.log(resData);
+    // console.log(userTokenId);
+    console.log("Update Profile!");
   };
 };

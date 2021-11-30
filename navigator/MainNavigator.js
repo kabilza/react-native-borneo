@@ -1,8 +1,6 @@
 import { NavigationContainer, Link } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-  createDrawerNavigator,
-} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useLayoutEffect } from "react";
 import { View, Button } from "react-native";
@@ -18,6 +16,7 @@ import RegulationsScreen from "../screens/RegulationsScreen";
 import RegistrationListScreen from "../screens/BatteryRegistration/RegistrationListScreen";
 import RegistrationAddEdit from "../screens/BatteryRegistration/RegistrationAddEdit";
 import BatteryDetailScreen from "../screens/BatteryRegistration/BatteryDetailScreen";
+import UploadScreen from "../screens/UploadScreen";
 
 import * as authActions from "../store/actions/auth";
 
@@ -29,12 +28,10 @@ const LogoutButton = (props) => {
   const dispatch = useDispatch();
   useLayoutEffect(() => {
     dispatch(authActions.logout());
-    props.navigation.replace('AuthenticationScreen');
-  }, [props.navigation])
+    props.navigation.replace("AuthenticationScreen");
+  }, [props.navigation]);
 
-  return (
-    <View></View>
-  );
+  return <View></View>;
 };
 
 const defaultScreenOptions = {
@@ -179,6 +176,14 @@ const MainNavigator = () => {
         options={{
           headerShown: false,
           gesturesEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name="UploadScreen"
+        component={UploadScreen}
+        options={{
+          title: "Upload Screen",
+          headerShown: true,
         }}
       />
     </Stack.Navigator>

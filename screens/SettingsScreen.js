@@ -73,10 +73,14 @@ const SettingsScreen = ({ navigation, route }) => {
         ? userInitialValues.displayName
         : "",
       userBriefInfo: authUserProfile.briefInfo ? authUserProfile.briefInfo : "",
-      userPhoneNumber: authUserProfile.phoneNumber ? authUserProfile.phoneNumber : "",
+      userPhoneNumber: authUserProfile.phoneNumber
+        ? authUserProfile.phoneNumber
+        : "",
       userFacebook: authUserProfile.facebook ? authUserProfile.facebook : "",
       userTwitter: authUserProfile.twitter ? authUserProfile.twitter : "",
-      userHomeAddress: authUserProfile.homeAddress ? authUserProfile.homeAddress : "",
+      userHomeAddress: authUserProfile.homeAddress
+        ? authUserProfile.homeAddress
+        : "",
       userAge: authUserProfile.age ? authUserProfile.age : "",
     },
     inputValidities: {
@@ -116,7 +120,7 @@ const SettingsScreen = ({ navigation, route }) => {
     const newProfile = formState.inputValues;
     setErrorText(null);
     setIsLoading(true);
-    console.log('newProfile ' + newProfile);
+    console.log("newProfile " + newProfile);
     action = authActions.updateProfile(newProfile, userTokenId);
     try {
       await dispatch(action);
@@ -246,6 +250,12 @@ const SettingsScreen = ({ navigation, route }) => {
         >
           <Text style={styles.buttonTextStyle}>Submit Changes</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          activeOpacity={0.5}
+          onPress={() => {navigation.push("UploadScreen")}}>
+          <Text style={styles.buttonTextStyle}>Upload Picture</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -267,7 +277,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#C0C0C0',
+    backgroundColor: "#C0C0C0",
     borderRadius: 15,
     shadowColor: "black",
     shadowOpacity: 0.26,
@@ -281,7 +291,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.primaryFont,
     fontSize: 25,
     fontWeight: "bold",
-    marginTop: 30
+    marginTop: 30,
   },
   listContainer: {
     width: "100%",
