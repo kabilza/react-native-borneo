@@ -27,4 +27,4 @@ pictureUpload
   $ expo start 
 ```
 3.Use iOS Simulator (macOS) or Android Emulator to test app (or your phone with expo app installed and scan the QR code in the browser)
-```
+
